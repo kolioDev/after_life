@@ -1,0 +1,12 @@
+create_table("trustees") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("user_id", "uuid", {"unique":true})
+
+    t.Column("name", "string")
+    t.Column("email", "string")
+    t.Column("phone", "string")
+    t.Column("relationship", "string")
+    t.Column("facebook_link", "string",{"null": true})
+    t.Column("twitter_link", "string",{"null": true})
+    t.Column("additional_information", "string",{"null": true})
+}

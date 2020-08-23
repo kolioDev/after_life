@@ -1,0 +1,28 @@
+[[scenario]]
+name = "user"
+
+  [[scenario.table]]
+    name = "users"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      username = "test.single@test.com"
+      provider = "google"
+      provider_id = "123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+
+[[scenario]]
+name = "login user"
+
+  [[scenario.table]]
+    name = "users"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      username = "login_usere@test.com"
+      provider = "google"
+      provider_id = "loginUser123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"

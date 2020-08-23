@@ -1,0 +1,6 @@
+create_table("sessions") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("user_id", "uuid" )
+	t.Column("unique_token", "string", {"null": true})
+	t.Column("refresh_token", "bytea")
+}

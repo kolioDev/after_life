@@ -1,0 +1,8 @@
+create_table("user_confirmations") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("user_id", "uuid")
+	t.Column("keys","bytea")
+	t.Column("keys_sent", "boolean")
+	t.Column("keys_seen", "boolean")
+	t.Column("confirmed", "boolean")
+}

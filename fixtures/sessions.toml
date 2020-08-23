@@ -1,0 +1,25 @@
+[[scenario]]
+name = "session"
+
+  [[scenario.table]]
+    name = "users"
+
+    [[scenario.table.row]]
+      id = "<%= uuidNamed("sessionUser") %>"
+      username = "test.session@test.com"
+      provider = "google"
+      provider_id = "123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+  [[scenario.table]]
+    name = "sessions"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      user_id = "<%= uuidNamed("sessionUser") %>"
+      unique_token="singe_session_123"
+      refresh_token="<%= hash("refr_tkn") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+

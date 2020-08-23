@@ -1,0 +1,5 @@
+add_foreign_key("trustees", "user_id", {"users": ["id"]}, {
+    "name": "users_fk_name",
+    "on_delete": "CASCADE",
+})
+

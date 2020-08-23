@@ -1,0 +1,1 @@
+drop_foreign_key("sessions", "users_fk_name", {"if_exists": true})
