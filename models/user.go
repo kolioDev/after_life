@@ -7,12 +7,11 @@ import (
 	"github.com/gobuffalo/validate/validators"
 
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
 )
 
 type User struct {
-	ID uuid.UUID `json:"id" db:"id"`
+	ID UUID `json:"id" db:"id"`
 
 	ProviderID string `json:"-" db:"provider_id"`
 	Provider   string `json:"provider" db:"provider"`

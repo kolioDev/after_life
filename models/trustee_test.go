@@ -2,7 +2,6 @@ package models
 
 import (
 	"github.com/gobuffalo/nulls"
-	"github.com/gobuffalo/uuid"
 )
 
 func (ms *ModelSuite) Test_Trustee_Create() {
@@ -29,7 +28,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		verrs, err := t.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Falsef(verrs.HasAny(), "Should not have validation errors but got %v", verrs.Errors)
-		t.ID = uuid.Nil
+		t.ID = UUIDNil()
 	})
 
 	t.FacebookLink = nulls.NewString("http://m.facebook.com/user.random321")
@@ -38,7 +37,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		verrs, err := t.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Falsef(verrs.HasAny(), "Should not have validation errors but got %v", verrs.Errors)
-		t.ID = uuid.Nil
+		t.ID = UUIDNil()
 	})
 
 	t.FacebookLink = nulls.String{}
@@ -47,7 +46,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		verrs, err := t.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Falsef(verrs.HasAny(), "Should not have validation errors but got %v", verrs.Errors)
-		t.ID = uuid.Nil
+		t.ID = UUIDNil()
 	})
 
 	t.Email = "invalid.fmail.com"
@@ -61,7 +60,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		ms.NoError(err)
 		ms.True(verrs.HasAny())
 		ms.ElementsMatchf([]string{"user_id", "email", "name", "phone", "relationship", "facebook"}, verrs.Keys(), "arrays mismatcehd got %v", verrs.Keys())
-		t.ID = uuid.Nil
+		t.ID = UUIDNil()
 	})
 }
 

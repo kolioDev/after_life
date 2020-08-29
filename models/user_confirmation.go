@@ -12,16 +12,15 @@ import (
 	"github.com/tjarratt/babble"
 
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
 )
 
 const KEYS_NUMBER = 5
 
 type UserConfirmation struct {
-	ID uuid.UUID `json:"id" db:"id"`
+	ID UUID `json:"id" db:"id"`
 
-	UserID uuid.UUID `json:"user_id" db:"user_id"`
+	UserID UUID `json:"user_id" db:"user_id"`
 
 	Keys                 string `json:"-" db:"-"`
 	KeysEncrypted        []byte `json:"-" db:"keys"`
@@ -69,7 +68,7 @@ func (u *UserConfirmation) ValidateUpdate(tx *pop.Connection) (*validate.Errors,
 func (u *UserConfirmation) Create(tx *pop.Connection, user *User) error {
 	k := envy.Get("APP_KEY", "password_123")
 
-	if user.ID == uuid.Nil {
+	if user.ID == UUIDNil() {
 		return errors.New("user cannot be empty")
 	}
 

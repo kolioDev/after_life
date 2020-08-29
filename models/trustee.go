@@ -9,18 +9,18 @@ import (
 	"time"
 
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/uuid"
+
 	"github.com/gobuffalo/validate"
 
 	"github.com/kolioDev/after_life/graphql/graph/model"
 )
 
 type Trustee struct {
-	ID        uuid.UUID `json:"id" db:"id"`
+	ID        UUID      `json:"id" db:"id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 
-	UserID uuid.UUID `json:"user_id" db:"user_id"`
+	UserID UUID `json:"user_id" db:"user_id"`
 
 	Name           string       `json:"name" db:"name"`
 	Relationship   string       `json:"relationship" db:"relationship"`
@@ -118,12 +118,12 @@ func (t *Trustee) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 //Creates user and userConfirmation DB entries
-func (t *Trustee) Create(tx *pop.Connection, userID uuid.UUID) (*validate.Errors, error) {
+func (t *Trustee) Create(tx *pop.Connection, userID UUID) (*validate.Errors, error) {
 	t.UserID = userID
 	return tx.ValidateAndCreate(t)
 }
 
-func (t *Trustees) GetForUser(tx *pop.Connection, userID uuid.UUID) error {
+func (t *Trustees) GetForUser(tx *pop.Connection, userID UUID) error {
 	return tx.Where("user_id=?", userID).All(t)
 }
 
