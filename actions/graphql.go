@@ -11,8 +11,10 @@ import (
 // GraphqlIndex default implementation.
 func GraphqlIndex(c buffalo.Context) error {
 	u := c.Value("current_user").(*models.User)
+	tx := models.DB //c.Value("tx").(*pop.Connection)
 
 	graph.SetUser(u)
+	graph.SetTX(tx)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
 		Resolvers: &graph.Resolver{},

@@ -21,6 +21,63 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: audios; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.audios (
+    id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.audios OWNER TO postgres;
+
+--
+-- Name: files; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.files (
+    id uuid NOT NULL,
+    owner_id uuid NOT NULL,
+    filename character varying(255) NOT NULL,
+    url character varying(255) NOT NULL,
+    file_size integer NOT NULL,
+    path character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.files OWNER TO postgres;
+
+--
+-- Name: instructions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.instructions (
+    id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.instructions OWNER TO postgres;
+
+--
+-- Name: pictures; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pictures (
+    id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.pictures OWNER TO postgres;
+
+--
 -- Name: schema_migration; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -103,6 +160,64 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
+-- Name: videoes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.videoes (
+    id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.videoes OWNER TO postgres;
+
+--
+-- Name: wills; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.wills (
+    id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.wills OWNER TO postgres;
+
+--
+-- Name: audios audios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.audios
+    ADD CONSTRAINT audios_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.files
+    ADD CONSTRAINT files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: instructions instructions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructions
+    ADD CONSTRAINT instructions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pictures pictures_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pictures
+    ADD CONSTRAINT pictures_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -135,10 +250,34 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: videoes videoes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.videoes
+    ADD CONSTRAINT videoes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wills wills_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.wills
+    ADD CONSTRAINT wills_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migration_version_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USING btree (version);
+
+
+--
+-- Name: files files_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.files
+    ADD CONSTRAINT files_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

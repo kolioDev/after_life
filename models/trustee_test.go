@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/gobuffalo/nulls"
+	"github.com/gobuffalo/uuid"
 )
 
 func (ms *ModelSuite) Test_Trustee_Create() {
@@ -28,7 +29,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		verrs, err := t.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Falsef(verrs.HasAny(), "Should not have validation errors but got %v", verrs.Errors)
-		t.ID = UUIDNil()
+		t.ID = uuid.Nil
 	})
 
 	t.FacebookLink = nulls.NewString("http://m.facebook.com/user.random321")
@@ -37,7 +38,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		verrs, err := t.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Falsef(verrs.HasAny(), "Should not have validation errors but got %v", verrs.Errors)
-		t.ID = UUIDNil()
+		t.ID = uuid.Nil
 	})
 
 	t.FacebookLink = nulls.String{}
@@ -46,7 +47,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		verrs, err := t.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Falsef(verrs.HasAny(), "Should not have validation errors but got %v", verrs.Errors)
-		t.ID = UUIDNil()
+		t.ID = uuid.Nil
 	})
 
 	t.Email = "invalid.fmail.com"
@@ -60,7 +61,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 		ms.NoError(err)
 		ms.True(verrs.HasAny())
 		ms.ElementsMatchf([]string{"user_id", "email", "name", "phone", "relationship", "facebook"}, verrs.Keys(), "arrays mismatcehd got %v", verrs.Keys())
-		t.ID = UUIDNil()
+		t.ID = uuid.Nil
 	})
 }
 
@@ -71,10 +72,47 @@ func (ms *ModelSuite) Test_Trustee_GetForUser() {
 	ts := Trustees{}
 	ms.NoError(ms.DB.Where("username=?", "trustees.owner1@test.com").First(u))
 
-	ms.NoError(ts.GetForUser(ms.DB, u.ID))
+	ms.NoError(ts.GetForUser(ms.DB, u.ID, "", ""))
 	ms.Equal(3, len(ts))
 
 	ms.NoError(ms.DB.Where("username=?", "trustees.owner2@test.com").First(u))
-	ms.NoError(ts.GetForUser(ms.DB, u.ID))
-	ms.Equal(2, len(ts))
+	ms.NoError(ts.GetForUser(ms.DB, u.ID, "", ""))
+ 	ms.Equal(2, len(ts))
+}
+
+func (ms *ModelSuite) Test_Trustee_Update() {
+	ms.LoadFixture("trustees")
+
+	u := &User{}
+	t := &Trustee{}
+	ms.NoError(ms.DB.Where("username=?", "trustees.owner1@test.com").First(u))
+
+	ms.NoError(ms.DB.Where("user_id=?", u.ID).First(t))
+
+	t.UserID = uuid.FromStringOrNil("3eebfd6f-2d2a-4417-8eb8-f4f1a0920e16")
+	ms.DBDelta(0, "trustees", func() {
+		verrs, err := t.Update(ms.DB)
+		ms.NoError(err)
+		ms.True(verrs.HasAny())
+		ms.ElementsMatchf([]string{"user_id"}, verrs.Keys(), "Expecting user_id verrss but got %v", verrs.Errors)
+	})
+
+	t.UserID = u.ID
+	t.Name = "inval"
+	ms.DBDelta(0, "trustees", func() {
+		verrs, err := t.Update(ms.DB)
+		ms.NoError(err)
+		ms.True(verrs.HasAny())
+		ms.ElementsMatchf([]string{"name"}, verrs.Keys(), "Expecting only name verrs but got %v", verrs.Errors)
+	})
+
+	t.Name = "Brand New Name"
+	ms.DBDelta(0, "trustees", func() {
+		verrs, err := t.Update(ms.DB)
+		ms.NoError(err)
+		ms.False(verrs.HasAny())
+	})
+
+	ms.NoError(ms.DB.Find(t, t.ID))
+	ms.Equal("Brand New Name", t.Name)
 }

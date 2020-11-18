@@ -3,10 +3,14 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gobuffalo/nulls"
-	"github.com/gobuffalo/validate/validators"
 	"strings"
 	"time"
+
+	"github.com/gobuffalo/nulls"
+	"github.com/gobuffalo/uuid"
+	"github.com/gobuffalo/validate/validators"
+	"github.com/kolioDev/after_life/graphql/scalars"
+	"github.com/pkg/errors"
 
 	"github.com/gobuffalo/pop"
 
@@ -16,11 +20,11 @@ import (
 )
 
 type Trustee struct {
-	ID        UUID      `json:"id" db:"id"`
+	ID        uuid.UUID `json:"id" db:"id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 
-	UserID UUID `json:"user_id" db:"user_id"`
+	UserID uuid.UUID `json:"user_id" db:"user_id"`
 
 	Name           string       `json:"name" db:"name"`
 	Relationship   string       `json:"relationship" db:"relationship"`
@@ -114,22 +118,43 @@ func (t *Trustee) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 // ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
 // This method is not required and may be deleted.
 func (t *Trustee) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
+	oldT := &Trustee{}
+	if err := tx.Find(oldT, t.ID); err != nil {
+		return validate.NewErrors(), errors.WithStack(err)
+	}
+
+	return validate.Validate(
+		&validators.StringsMatch{Name: "user_id", Field: t.UserID.String(), Field2: oldT.UserID.String()},
+	), nil
 }
 
-//Creates user and userConfirmation DB entries
-func (t *Trustee) Create(tx *pop.Connection, userID UUID) (*validate.Errors, error) {
+//Creates trustee entry in the DB
+func (t *Trustee) Create(tx *pop.Connection, userID uuid.UUID) (*validate.Errors, error) {
 	t.UserID = userID
 	return tx.ValidateAndCreate(t)
 }
 
-func (t *Trustees) GetForUser(tx *pop.Connection, userID UUID) error {
-	return tx.Where("user_id=?", userID).All(t)
+//Updates trustee entry in the DB
+func (t *Trustee) Update(tx *pop.Connection) (*validate.Errors, error) {
+	return tx.ValidateAndUpdate(t)
+}
+
+func (t *Trustees) GetForUser(tx *pop.Connection, userID uuid.UUID, orderBy string, order string) error {
+
+	if orderBy == "" {
+		orderBy = "created_at"
+	}
+
+	if order == "" {
+		order = "asc"
+	}
+
+	return tx.Where("user_id=?", userID).Order(fmt.Sprintf("%s %s", orderBy, order)).All(t)
 }
 
 func (t Trustee) ToGraphQL() *model.Trustee {
 	return &model.Trustee{
-		ID:           t.ID.String(),
+		ID:           scalars.ModelsUUID2GhqlUUID(t.ID),
 		CreatedAt:    t.CreatedAt,
 		UpdatedAt:    t.UpdatedAt,
 		Relationship: model.TrusteeType(t.Relationship),

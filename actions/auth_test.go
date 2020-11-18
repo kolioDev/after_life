@@ -180,3 +180,26 @@ func (as *ActionSuite) Test_Auth_AuthResetSignUp_UserID() {
 	})
 
 }
+
+
+func getJWT(as *ActionSuite, s *models.Session) (string){
+	var resBody = &struct {
+		Token        string `json:"token"`
+		ExpiresAt    int    `json:"expires_at"`
+		RefreshToken string `json:"refresh_token"`
+	}{}
+
+	uc := &models.UserConfirmation{}
+
+	as.NoError(uc.Create(as.DB, &models.User{ID: s.UserID}))
+	as.NoError(uc.Confirm(as.DB))
+
+	res := as.JSON("/auth/token").Post(map[string]string{
+		"refresh_token": "refr_tkn",
+		"user_id":       s.UserID.String(),
+	})
+
+	as.Equalf(200, res.Code, "Expects 200 but got %d with body %s", res.Code, res.Body.String())
+	as.NoError(json.Unmarshal(res.Body.Bytes(), resBody))
+	return resBody.Token
+}

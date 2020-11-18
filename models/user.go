@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/gobuffalo/uuid"
+
 	"github.com/gobuffalo/validate/validators"
 
 	"github.com/gobuffalo/pop"
@@ -11,7 +13,7 @@ import (
 )
 
 type User struct {
-	ID UUID `json:"id" db:"id"`
+	ID uuid.UUID `json:"id" db:"id"`
 
 	ProviderID string `json:"-" db:"provider_id"`
 	Provider   string `json:"provider" db:"provider"`

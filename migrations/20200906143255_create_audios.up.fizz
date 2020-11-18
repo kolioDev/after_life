@@ -1,0 +1,3 @@
+create_table("audios") {
+	t.Column("id", "uuid", {"primary": true})
+}

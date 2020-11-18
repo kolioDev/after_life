@@ -235,6 +235,7 @@ func AuthRefreshToken(c buffalo.Context) error {
 		}
 		return errors.WithStack(err)
 	}
+
 	if bcrypt.CompareHashAndPassword(s.RefreshTokenHash, []byte(refreshToken)) != nil {
 		return c.Render(406, r.JSON("invalid refresh token"))
 	}

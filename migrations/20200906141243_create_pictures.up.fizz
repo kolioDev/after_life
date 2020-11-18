@@ -1,0 +1,3 @@
+create_table("pictures") {
+	t.Column("id", "uuid", {"primary": true})
+}

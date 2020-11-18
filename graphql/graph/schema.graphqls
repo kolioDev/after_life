@@ -3,50 +3,17 @@
 # https://gqlgen.com/getting-started/
 
 scalar Time
+scalar UUID
 
-type Trustee {
-    id: ID!
-    createdAt: Time!
-    updatedAt: Time!
-    relationship: TrusteeType!
-    name: String!
-    email: String!
-    phone : String!
-    facebookLink: String
-    twitterLink: String
+type Version {
+    number: String!
 }
-
-enum TrusteeType {
-    father
-    mother
-    other_relative
-    best_friend
-    school_friend
-    college_friend
-    other_friend
-    husband
-    wife
-    girlfriend
-    boyfriend
-    fiance
-    acquaintance
-}
-
 
 type Query {
-    trustees: [Trustee!]
+    version: Version!
 }
 
-input NewTrustee {
-    name: String!
-    relationship: TrusteeType!
-    email: String!
-    phone : String!
-    facebookLink: String
-    twitterLink: String
-    additionalInformation: String
-}
 
 type Mutation {
-    createTrustee(trusteeInput: NewTrustee!): Trustee!
+    version: Version!
 }

@@ -1,0 +1,3 @@
+create_table("wills") {
+	t.Column("id", "uuid", {"primary": true})
+}

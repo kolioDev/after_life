@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/gobuffalo/nulls"
 	"log"
+
+	"github.com/gobuffalo/nulls"
 
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"

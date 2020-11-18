@@ -4,8 +4,23 @@ package graph
 // will be copied through when generating and any unknown code will be moved to the end.
 
 import (
+	"context"
+
 	"github.com/kolioDev/after_life/graphql/graph/generated"
+	"github.com/kolioDev/after_life/graphql/graph/model"
 )
+
+func (r *mutationResolver) Version(ctx context.Context) (*model.Version, error) {
+	return &model.Version{
+		Number: VERSION,
+	}, nil
+}
+
+func (r *queryResolver) Version(ctx context.Context) (*model.Version, error) {
+	return &model.Version{
+		Number: VERSION,
+	}, nil
+}
 
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
@@ -22,5 +37,4 @@ type queryResolver struct{ *Resolver }
 //  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
 //    it when you're done.
 //  - You have helper methods in this file. Move them out to keep these resolver files clean.
-type MutationResolver struct{ *Resolver }
-type QueryResolver struct{ *Resolver }
+const VERSION = "0.0.1"

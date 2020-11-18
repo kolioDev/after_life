@@ -23,3 +23,80 @@ name = "session"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
 
+
+[[scenario]]
+name = "sessions"
+
+  [[scenario.table]]
+    name = "users"
+
+    [[scenario.table.row]]
+      id = "<%= uuidNamed("sessionUser1") %>"
+      username = "test.session1@test.com"
+      provider = "google1"
+      provider_id = "123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuidNamed("sessionUser2") %>"
+      username = "test.session2@test.com"
+      provider = "google1"
+      provider_id = "123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuidNamed("sessionUser3") %>"
+      username = "test.session3@test.com"
+      provider = "google1"
+      provider_id = "123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuidNamed("sessionUser4") %>"
+      username = "test.session4@test.com"
+      provider = "google1"
+      provider_id = "123321"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+  [[scenario.table]]
+    name = "sessions"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      user_id = "<%= uuidNamed("sessionUser1") %>"
+      unique_token="singe_session_123_1"
+      refresh_token="<%= hash("refr_tkn") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      user_id = "<%= uuidNamed("sessionUser2") %>"
+      unique_token="singe_session_123_2"
+      refresh_token="<%= hash("refr_tkn") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      user_id = "<%= uuidNamed("sessionUser3") %>"
+      unique_token="singe_session_123_3"
+      refresh_token="<%= hash("refr_tkn") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      user_id = "<%= uuidNamed("sessionUser4") %>"
+      unique_token="singe_session_123_4"
+      refresh_token="<%= hash("refr_tkn") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+
+
+

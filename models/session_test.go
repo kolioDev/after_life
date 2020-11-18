@@ -1,5 +1,7 @@
 package models
 
+import "github.com/gobuffalo/uuid"
+
 func (ms *ModelSuite) Test_Session_Create() {
 	ms.LoadFixture("user")
 	u := &User{}
@@ -18,7 +20,7 @@ func (ms *ModelSuite) Test_Session_Create() {
 	ms.NotEqual("", s.UniqueToken.String)
 	ms.NotEqual("", s.RefreshToken)
 	ms.Equal(s.UserID, u.ID)
-	ms.NotEqual(UUIDNil(), u.ID)
+	ms.NotEqual(uuid.Nil, u.ID)
 }
 
 func (ms *ModelSuite) Test_Session_ResetUniqueToken() {

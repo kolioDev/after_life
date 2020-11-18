@@ -1,0 +1,63 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+enum TrusteeType {
+    father
+    mother
+    other_relative
+    best_friend
+    school_friend
+    college_friend
+    other_friend
+    husband
+    wife
+    girlfriend
+    boyfriend
+    fiance
+    acquaintance
+}
+
+type Trustee {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    relationship: TrusteeType!
+    name: String!
+    email: String!
+    phone : String!
+    facebookLink: String
+    twitterLink: String
+}
+
+input NewTrustee {
+    name: String!
+    relationship: TrusteeType!
+    email: String!
+    phone : String!
+    facebookLink: String
+    twitterLink: String
+    additionalInformation: String
+}
+
+input UpdateTrustee {
+    id: UUID!
+    name: String
+    relationship: TrusteeType
+    email: String
+    phone : String
+    facebookLink: String
+    twitterLink: String
+    additionalInformation: String
+}
+
+
+extend type Query {
+    trustees(orderBy: String, order: String): [Trustee!]
+}
+
+
+extend type Mutation {
+    createTrustee(trusteeInput: NewTrustee!): Trustee!
+    updateTrustee(trusteeInput: UpdateTrustee!): Trustee!
+}

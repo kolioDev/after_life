@@ -1,0 +1,11 @@
+create_table("files") {
+	t.Column("id", "uuid", {"primary": true})
+
+	t.Column("owner_id", "uuid", {"unique":false})
+    t.Column("filename", "string")
+    t.Column("url", "string")
+    t.Column("file_size",  "integer")
+    t.Column("path", "string")
+
+    t.ForeignKey("owner_id", {"users": ["id"]}, {"on_delete": "cascade"})
+}

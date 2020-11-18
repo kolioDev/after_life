@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gobuffalo/uuid"
+
 	"github.com/kolioDev/after_life/helpers"
 	"github.com/pkg/errors"
 
@@ -18,9 +20,9 @@ import (
 const KEYS_NUMBER = 5
 
 type UserConfirmation struct {
-	ID UUID `json:"id" db:"id"`
+	ID uuid.UUID `json:"id" db:"id"`
 
-	UserID UUID `json:"user_id" db:"user_id"`
+	UserID uuid.UUID `json:"user_id" db:"user_id"`
 
 	Keys                 string `json:"-" db:"-"`
 	KeysEncrypted        []byte `json:"-" db:"keys"`
@@ -68,7 +70,7 @@ func (u *UserConfirmation) ValidateUpdate(tx *pop.Connection) (*validate.Errors,
 func (u *UserConfirmation) Create(tx *pop.Connection, user *User) error {
 	k := envy.Get("APP_KEY", "password_123")
 
-	if user.ID == UUIDNil() {
+	if user.ID == uuid.Nil {
 		return errors.New("user cannot be empty")
 	}
 
