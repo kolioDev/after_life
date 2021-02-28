@@ -9,6 +9,7 @@ import (
 	"github.com/gobuffalo/uuid"
 	"github.com/kolioDev/after_life/models"
 	"os"
+	"strings"
 )
 
 const testUploadFileName = "test.jpg"
@@ -27,7 +28,7 @@ func (as *ActionSuite) Test_Files_SaveFile() {
 	s := &models.Session{}
 	as.NoError(as.DB.First(s))
 	token := getJWT(as, s)
-	f := saveFile(as, token)
+	f := saveFile(as, testUploadFileName, testUploadPath, token)
 
 	//check if all needed params are returned
 	as.Equal("images", f.Path)
@@ -37,6 +38,11 @@ func (as *ActionSuite) Test_Files_SaveFile() {
 	res := as.HTML("%s?_token=%s", f.Url, token).Get()
 	as.Equal(200, res.Code)
 
+	//Check with video file
+	saveFile(as, "test.mp4", "videos/test.mp4", token)
+
+	//Check with audio file
+	saveFile(as, "test.mp3", "audios/test.mp3", token)
 }
 
 func (as *ActionSuite) Test_Files_DeleteFile() {
@@ -47,13 +53,13 @@ func (as *ActionSuite) Test_Files_DeleteFile() {
 	s1 := &models.Session{}
 	as.NoError(as.DB.Where("unique_token=?", "singe_session_123_1").First(s1))
 	token1 := getJWT(as, s1)
-	f1 := saveFile(as, token1)
+	f1 := saveFile(as, testUploadFileName, testUploadPath, token1)
 
 	//User 2
 	s2 := &models.Session{}
 	as.NoError(as.DB.Where("unique_token=?", "singe_session_123_2").First(s2))
 	token2 := getJWT(as, s2)
-	f2 := saveFile(as, token2)
+	f2 := saveFile(as, testUploadFileName, testUploadPath, token2)
 
 	//Users 1 should not be able to delete file owned by user 2
 	res := as.JSON("/file/%s?_token=%s", f2.ID, token1).Delete()
@@ -75,15 +81,15 @@ func (as *ActionSuite) Test_Files_DeleteFile() {
 	as.Error(err)
 }
 
-func saveFile(as *ActionSuite, token string) *models.File {
+func saveFile(as *ActionSuite, filename, filepath, token string) *models.File {
 	f := &models.File{}
 
-	r, err := os.Open(fmt.Sprintf("%s/%s", storagePath, testUploadFileName))
+	r, err := os.Open(fmt.Sprintf("%s/%s", storagePath, filename))
 	as.NoError(err)
 
 	httpF := httptest.File{
 		ParamName: "file",
-		FileName:  testUploadPath,
+		FileName:  filepath,
 		Reader:    r,
 	}
 
@@ -93,7 +99,7 @@ func saveFile(as *ActionSuite, token string) *models.File {
 	as.NoError(json.Unmarshal(res.Body.Bytes(), &f))
 
 	//check if file is saved to disk
-	_, err = os.Open(fmt.Sprintf("%s/%s/%s", storagePath, "images/", f.Filename))
+	_, err = os.Open(fmt.Sprintf("%s/%s", storagePath, strings.Replace(filepath, filename, f.Filename, 1)))
 	as.NoError(err)
 
 	return f

@@ -6,7 +6,6 @@ package graph
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"github.com/pkg/errors"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -16,7 +15,7 @@ import (
 	"github.com/vektah/gqlparser/gqlerror"
 )
 
-func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model.NewTrustee) (*model.Trustee, error) {
+func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model.TrusteeInput) (*model.Trustee, error) {
 	t := models.Trustee{
 		Name:           trusteeInput.Name,
 		Relationship:   trusteeInput.Relationship.String(),
@@ -83,8 +82,6 @@ func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model
 	if trusteeInput.FacebookLink != nil {
 		t.FacebookLink = nulls.NewString(*trusteeInput.FacebookLink)
 	}
-
-	fmt.Println("TRUSTEE", t)
 
 	verrs, err := t.Update(TX)
 

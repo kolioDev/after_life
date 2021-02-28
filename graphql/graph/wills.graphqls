@@ -1,0 +1,43 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+#Instructions *Instructions `json:"instructions" db:"-"`
+#Pictures     *File         `json:"pictures" db:"-"`
+#Videos       *File         `json:"videos" db:"-"`
+#Audios       *File         `json:"audios" db:"-"`
+#
+#UserID   uuid.UUID `json:"user_id" db:"user_id"`
+#Trustees *Trustees  `json:"trustees" db:"-"`
+
+type Will {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    title :    String!
+    priority: Int
+    instructions: [Instruction!]
+    video: File
+    audio: File
+    pictute: File
+    trustees: [Trustee!]
+}
+
+input WillInput {
+    title: String!
+    priority: Int
+    instructions : [InstructionInput!]
+    video: FileInput
+    audio: FileInput
+    pictute: FileInput
+}
+
+
+extend type Query {
+    will: [Will!]
+}
+
+
+extend type Mutation {
+    createWill(willInput: WillInput!): Will!
+}

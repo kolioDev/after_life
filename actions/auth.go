@@ -4,6 +4,7 @@ package actions
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -169,6 +170,7 @@ func AuthGetInitialTokens(c buffalo.Context) error {
 	}
 
 	if err := tx.Where("user_id=?", u.ID).First(uc); err != nil {
+		log.Println("---169---")
 		return errors.WithStack(err)
 	}
 

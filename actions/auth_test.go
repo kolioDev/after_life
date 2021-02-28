@@ -19,13 +19,17 @@ func (as *ActionSuite) Test_Auth_AuthGetInitialTokens() {
 	as.LoadFixture("session")
 
 	s := &models.Session{}
+	uc := &models.UserConfirmation{}
+
 	as.NoError(as.DB.First(s))
+	as.NoError(uc.Create(as.DB, &models.User{ID: s.UserID}))
+
 	as.NotEqual("", s.UniqueToken.String)
 
 	uniqueToken := s.UniqueToken.String
 
 	res := as.JSON(fmt.Sprintf("/auth/access/%s", uniqueToken)).Get()
-	as.Equal(200, res.Code)
+	as.Equalf(200, res.Code, "Expects 200 but got %d with body - %s", res.Code, res.Body.String())
 
 	var resBody = &struct {
 		Token        string    `json:"token"`
@@ -181,8 +185,7 @@ func (as *ActionSuite) Test_Auth_AuthResetSignUp_UserID() {
 
 }
 
-
-func getJWT(as *ActionSuite, s *models.Session) (string){
+func getJWT(as *ActionSuite, s *models.Session) string {
 	var resBody = &struct {
 		Token        string `json:"token"`
 		ExpiresAt    int    `json:"expires_at"`

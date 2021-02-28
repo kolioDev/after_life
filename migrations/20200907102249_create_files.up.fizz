@@ -6,6 +6,7 @@ create_table("files") {
     t.Column("url", "string")
     t.Column("file_size",  "integer")
     t.Column("path", "string")
+    t.Column("type", "string")
 
     t.ForeignKey("owner_id", {"users": ["id"]}, {"on_delete": "cascade"})
 }

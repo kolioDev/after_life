@@ -66,18 +66,20 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 }
 
 func (ms *ModelSuite) Test_Trustee_GetForUser() {
+	ms.DB.Destroy(&Trustees{})
 	ms.LoadFixture("trustees")
 
 	u := &User{}
-	ts := Trustees{}
+	ts := &Trustees{}
 	ms.NoError(ms.DB.Where("username=?", "trustees.owner1@test.com").First(u))
 
 	ms.NoError(ts.GetForUser(ms.DB, u.ID, "", ""))
-	ms.Equal(3, len(ts))
+	ms.Equal(3, len(*ts))
 
+	ts = &Trustees{}
 	ms.NoError(ms.DB.Where("username=?", "trustees.owner2@test.com").First(u))
 	ms.NoError(ts.GetForUser(ms.DB, u.ID, "", ""))
- 	ms.Equal(2, len(ts))
+	ms.Equalf(2, len(*ts), "Expects 2 trustees but got %d  - %v", len(*ts), ts)
 }
 
 func (ms *ModelSuite) Test_Trustee_Update() {

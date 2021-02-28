@@ -17,6 +17,12 @@ import (
 
 // FilesSaveFile stores file on disk (or ftp) and makes data entry in the DB
 func FilesSaveFile(c buffalo.Context) error {
+	var folder2filetype = map[string]string{
+		"videos": "video",
+		"images": "image",
+		"audios": "audio",
+	}
+
 	var buf bytes.Buffer
 	tx := c.Value("tx").(*pop.Connection)
 	u := c.Value("current_user").(*models.User)
@@ -39,6 +45,7 @@ func FilesSaveFile(c buffalo.Context) error {
 		Filename: filepath.Base(filename),
 		FileSize: file.FileHeader.Size,
 		Path:     filepath.Dir(filename),
+		Type:     folder2filetype[filepath.Dir(filename)],
 	}
 
 	verrs, err := f.Create(tx, u.ID)

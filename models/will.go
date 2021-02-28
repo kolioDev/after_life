@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"github.com/gobuffalo/nulls"
 	"time"
 
 	"github.com/gobuffalo/pop"
@@ -14,16 +15,16 @@ type Will struct {
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 
-	Title      string `json:"title" db:"title"`
-	Importance int    `json:"importance" db:"importance"`
+	Title    string       `json:"title" db:"title"`
+	Priority nulls.UInt32 `json:"importance" db:"priority"`
 
-	Instruction Instructions `json:"instructions" db:"-"`
-	Pictures    Pictures     `json:"pictures" db:"-"`
-	Videos      Videos       `json:"videos" db:"-"`
-	Audios      Audios       `json:"audios" db:"-"`
+	Instructions *Instructions `json:"instructions" db:"-"`
+	Pictures     *File         `json:"pictures" db:"-"`
+	Videos       *File         `json:"videos" db:"-"`
+	Audios       *File         `json:"audios" db:"-"`
 
 	UserID   uuid.UUID `json:"user_id" db:"user_id"`
-	Trustees Trustees  `json:"trustees" db:"trustees"`
+	Trustees *Trustees `json:"trustees" db:"-"`
 }
 
 // String is not required by pop and may be deleted
@@ -56,5 +57,15 @@ func (w *Will) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 // ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
 // This method is not required and may be deleted.
 func (w *Will) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
+	return validate.NewErrors(), nil
+}
+
+//Creates instruction entry in the DB
+func (w *Will) Create(tx *pop.Connection) (*validate.Errors, error) {
+	//TODO::implement
+	//Validate all instructions
+	//Save instructions
+
+	//validate&create will
 	return validate.NewErrors(), nil
 }

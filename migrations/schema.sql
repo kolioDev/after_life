@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.2
--- Dumped by pg_dump version 12.2
+-- Dumped from database version 10.14
+-- Dumped by pg_dump version 10.14
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,22 +16,23 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
-
---
--- Name: audios; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.audios (
-    id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.audios OWNER TO postgres;
+SET default_with_oids = false;
 
 --
 -- Name: files; Type: TABLE; Schema: public; Owner: postgres
@@ -44,6 +45,7 @@ CREATE TABLE public.files (
     url character varying(255) NOT NULL,
     file_size integer NOT NULL,
     path character varying(255) NOT NULL,
+    type character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -57,25 +59,15 @@ ALTER TABLE public.files OWNER TO postgres;
 
 CREATE TABLE public.instructions (
     id uuid NOT NULL,
+    index integer DEFAULT 0 NOT NULL,
+    will_id uuid NOT NULL,
+    content character varying(500) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 ALTER TABLE public.instructions OWNER TO postgres;
-
---
--- Name: pictures; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.pictures (
-    id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.pictures OWNER TO postgres;
 
 --
 -- Name: schema_migration; Type: TABLE; Schema: public; Owner: postgres
@@ -160,38 +152,20 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- Name: videoes; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.videoes (
-    id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
-ALTER TABLE public.videoes OWNER TO postgres;
-
---
 -- Name: wills; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.wills (
     id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    priority integer DEFAULT 0 NOT NULL,
+    title character varying(128) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 ALTER TABLE public.wills OWNER TO postgres;
-
---
--- Name: audios audios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.audios
-    ADD CONSTRAINT audios_pkey PRIMARY KEY (id);
-
 
 --
 -- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -207,14 +181,6 @@ ALTER TABLE ONLY public.files
 
 ALTER TABLE ONLY public.instructions
     ADD CONSTRAINT instructions_pkey PRIMARY KEY (id);
-
-
---
--- Name: pictures pictures_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pictures
-    ADD CONSTRAINT pictures_pkey PRIMARY KEY (id);
 
 
 --
@@ -250,14 +216,6 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: videoes videoes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.videoes
-    ADD CONSTRAINT videoes_pkey PRIMARY KEY (id);
-
-
---
 -- Name: wills wills_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -281,27 +239,43 @@ ALTER TABLE ONLY public.files
 
 
 --
--- Name: sessions users_fk_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sessions users_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.sessions
-    ADD CONSTRAINT users_fk_name FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT users_fk_id FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
--- Name: user_confirmations users_fk_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: user_confirmations users_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.user_confirmations
-    ADD CONSTRAINT users_fk_name FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT users_fk_id FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
--- Name: trustees users_fk_name; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: trustees users_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.trustees
-    ADD CONSTRAINT users_fk_name FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT users_fk_id FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: wills users_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.wills
+    ADD CONSTRAINT users_fk_id FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: instructions wills_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.instructions
+    ADD CONSTRAINT wills_fk_id FOREIGN KEY (will_id) REFERENCES public.wills(id) ON DELETE CASCADE;
 
 
 --

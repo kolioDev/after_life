@@ -1,0 +1,16 @@
+type File {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    url: String!
+    name: String!
+    type: String!
+    size: Int!
+}
+
+type FileInput {
+    url: String!
+    name: String!
+    type: String!
+    size: Int!
+}

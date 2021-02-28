@@ -1,0 +1,18 @@
+type Instruction {
+    id: UUID!
+    createdAt: Time!
+    updatedAt: Time!
+    index: Int!
+    text: String
+    picture: File
+    audio: File
+    video: File
+}
+
+input  InstructionInput {
+    index: Int!
+    text: String
+    picture: File
+    audio: File
+    video: File
+}

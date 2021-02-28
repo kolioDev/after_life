@@ -1,3 +1,6 @@
 create_table("instructions") {
 	t.Column("id", "uuid", {"primary": true})
+	t.Column("index", "integer", {"default": 0})
+	t.Column("will_id", "uuid")
+	t.Column("content", "string", {"size": 500})
 }

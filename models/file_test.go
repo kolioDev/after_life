@@ -17,6 +17,7 @@ func (ms *ModelSuite) Test_File_Create() {
 		Url:      "http://127.0.0.1:3000/images/pictutes/" + filename,
 		Filename: filename,
 		Path:     "images",
+		Type:     "image",
 		FileSize: 300,
 	}
 
@@ -87,18 +88,18 @@ func (ms *ModelSuite) Test_File_Create() {
 	})
 
 	ms.DBDelta(0, "files", func() {
-		f.Path = "cars"
+		f.Type = "car"
 		verrs, err := f.Create(ms.DB, u.ID)
 		ms.NoError(err)
 		ms.Truef(verrs.HasAny(), "Should have verrs, but got %v", verrs.Errors)
-		ms.ElementsMatchf([]string{"path"}, verrs.Keys(), "arrays mismatched got %v", verrs.Keys())
-		f.Path = "images"
+		ms.ElementsMatchf([]string{"type"}, verrs.Keys(), "arrays mismatched got %v", verrs.Keys())
+		f.Type = "image"
 	})
 
 	ms.DBDelta(1, "files", func() {
-		filename := fmt.Sprintf("%d__%s", time.Now().UnixNano(), "test.avi")
-		f.Url = "http://127.0.0.1:3000/images/pictutes/" + filename
+		f.Type = "image"
 		f.Filename = filename
+		f.Url = "http://127.0.0.1:3000/images/" + filename
 		f.FileSize = 30000
 		verrs, err := f.Create(ms.DB, u.ID)
 		ms.NoError(err)

@@ -15,64 +15,69 @@ import (
 
 const MAX_FILESIZE = 1000000000 //in bytes = 1 GB
 
-var ACCEPTABLE_FILETYPES = []string{
+var ACCEPTABLE_FILETYPES = map[string][]string{
 	//Image
-	"png",
-	"jpg",
-	"jp2",
-	"jpeg",
-	"gif",
-	"bmp",
-	"wbmp",
-	"pgm",
+	"image": {
+		"png",
+		"jpg",
+		"jp2",
+		"jpeg",
+		"gif",
+		"bmp",
+		"wbmp",
+		"pgm",
+	},
 
 	//video
-	"webm",
-	"mkv",
-	"flv",
-	"vob",
-	"ogv",
-	"ogg",
-	"gifv",
-	"avi",
-	"mng",
-	"mov",
-	"wmv",
-	"mp4",
-	"m4p",
-	"m4v",
-	"mpg",
-	"mp2",
-	"mpeg",
-	"mpe",
-	"mpv",
-	"m2v",
-	"m4v",
-
+	"video": {
+		"webm",
+		"mkv",
+		"flv",
+		"vob",
+		"ogv",
+		"ogg",
+		"gifv",
+		"avi",
+		"mng",
+		"mov",
+		"wmv",
+		"mp4",
+		"m4p",
+		"m4v",
+		"mpg",
+		"mp2",
+		"mpeg",
+		"mpe",
+		"mpv",
+		"m2v",
+		"m4v",
+	},
 	//audio
-	"3gp",
-	"aa",
-	"aac",
-	"aiff",
-	"dvf",
-	"flac",
-	"gsm",
-	"m4a",
-	"m4b",
-	"m4p",
-	"mmf",
-	"mp3",
-	"ogg",
-	"oga",
-	"mogg",
-	"raw",
-	"tta",
-	"voc",
-	"vox",
-	"wav",
-	"wma",
-	"wv",
-	"webm",
+	"audio": {
+		"3gp",
+		"aa",
+		"aac",
+		"aiff",
+		"dvf",
+		"flac",
+		"gsm",
+		"m4a",
+		"m4b",
+		"m4p",
+		"mmf",
+		"mp3",
+		"ogg",
+		"oga",
+		"mogg",
+		"raw",
+		"tta",
+		"voc",
+		"vox",
+		"wav",
+		"wma",
+		"wv",
+		"webm",
+	},
 }
 
 type File struct {
@@ -84,6 +89,7 @@ type File struct {
 	Url      string    `json:"url" db:"url"`
 	Filename string    `json:"filename" db:"filename"`
 	Path     string    `json:"path" db:"path"`
+	Type     string    `json:"type" db:"type"`
 	FileSize int64     `json:"file_size" db:"file_size"`
 }
 
@@ -106,27 +112,21 @@ func (f Files) String() string {
 // This method is not required and may be deleted.
 func (f *File) Validate(tx *pop.Connection) (*validate.Errors, error) {
 
-	return validate.Validate(
-		&validators.StringIsPresent{Name: "url", Field: f.Url},
+	vals := []validate.Validator{&validators.StringIsPresent{Name: "url", Field: f.Url},
 		&validators.StringLengthInRange{Name: "url", Min: 20, Max: 250, Field: f.Url},
 		&validators.URLIsPresent{Name: "url", Field: f.Url},
 
 		&validators.StringIsPresent{Name: "path", Field: f.Path},
 		&validators.StringLengthInRange{Name: "path", Field: f.Path, Min: 1, Max: 64},
-		&validators.RegexMatch{
-			Name:    "path",
-			Field:   f.Path,
-			Expr:    "(audios|videos|images)",
-			Message: "invalid path",
-		},
-
-
+		&validators.RegexMatch{Name: "path", Field: f.Path, Expr: "(audios|videos|images)", Message: "invalid path"},
+		&validators.RegexMatch{Name: "type", Field: f.Type, Expr: "(audio|video|image)", Message: "invalid type"},
 		&validators.StringIsPresent{Name: "filename", Field: f.Filename},
 		&validators.StringLengthInRange{Name: "filename", Min: 10, Max: 150, Field: f.Filename},
+
 		&validators.RegexMatch{
 			Name:    "filename",
 			Field:   f.Filename,
-			Expr:    fmt.Sprintf("\\S\\.(%s)", strings.Join(ACCEPTABLE_FILETYPES, "|")),
+			Expr:    fmt.Sprintf("\\S\\.(%s)", strings.Join(ACCEPTABLE_FILETYPES[f.Type], "|")),
 			Message: "invalid filename",
 		},
 
@@ -142,7 +142,9 @@ func (f *File) Validate(tx *pop.Connection) (*validate.Errors, error) {
 			}
 			return true
 		}},
-	), nil
+	}
+
+	return validate.Validate(vals...), nil
 }
 
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.

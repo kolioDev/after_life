@@ -30,7 +30,7 @@ type Trustee {
     twitterLink: String
 }
 
-input NewTrustee {
+input TrusteeInput {
     name: String!
     relationship: TrusteeType!
     email: String!
@@ -58,6 +58,6 @@ extend type Query {
 
 
 extend type Mutation {
-    createTrustee(trusteeInput: NewTrustee!): Trustee!
+    createTrustee(trusteeInput: TrusteeInput!): Trustee!
     updateTrustee(trusteeInput: UpdateTrustee!): Trustee!
 }

@@ -11,14 +11,25 @@ import (
 	"github.com/kolioDev/after_life/graphql/scalars"
 )
 
-type NewTrustee struct {
-	Name                  string      `json:"name"`
-	Relationship          TrusteeType `json:"relationship"`
-	Email                 string      `json:"email"`
-	Phone                 string      `json:"phone"`
-	FacebookLink          *string     `json:"facebookLink"`
-	TwitterLink           *string     `json:"twitterLink"`
-	AdditionalInformation *string     `json:"additionalInformation"`
+type File struct {
+	ID        scalars.UUID `json:"id"`
+	CreatedAt time.Time    `json:"createdAt"`
+	UpdatedAt time.Time    `json:"updatedAt"`
+	URL       string       `json:"url"`
+	Name      string       `json:"name"`
+	Type      string       `json:"type"`
+	Size      int          `json:"size"`
+}
+
+type Instruction struct {
+	ID        scalars.UUID `json:"id"`
+	CreatedAt time.Time    `json:"createdAt"`
+	UpdatedAt time.Time    `json:"updatedAt"`
+	Index     int          `json:"index"`
+	Text      *string      `json:"text"`
+	Picture   *File        `json:"picture"`
+	Audio     *File        `json:"audio"`
+	Video     *File        `json:"video"`
 }
 
 type Trustee struct {
@@ -31,6 +42,16 @@ type Trustee struct {
 	Phone        string       `json:"phone"`
 	FacebookLink *string      `json:"facebookLink"`
 	TwitterLink  *string      `json:"twitterLink"`
+}
+
+type TrusteeInput struct {
+	Name                  string      `json:"name"`
+	Relationship          TrusteeType `json:"relationship"`
+	Email                 string      `json:"email"`
+	Phone                 string      `json:"phone"`
+	FacebookLink          *string     `json:"facebookLink"`
+	TwitterLink           *string     `json:"twitterLink"`
+	AdditionalInformation *string     `json:"additionalInformation"`
 }
 
 type UpdateTrustee struct {
@@ -46,6 +67,24 @@ type UpdateTrustee struct {
 
 type Version struct {
 	Number string `json:"number"`
+}
+
+type Will struct {
+	ID           scalars.UUID   `json:"id"`
+	CreatedAt    time.Time      `json:"createdAt"`
+	UpdatedAt    time.Time      `json:"updatedAt"`
+	Title        string         `json:"title"`
+	Priority     *int           `json:"priority"`
+	Instructions []*Instruction `json:"instructions"`
+	Video        *File          `json:"video"`
+	Audio        *File          `json:"audio"`
+	Pictute      *File          `json:"pictute"`
+	Trustees     []*Trustee     `json:"trustees"`
+}
+
+type WillInput struct {
+	Title    string `json:"title"`
+	Priority *int   `json:"priority"`
 }
 
 type TrusteeType string

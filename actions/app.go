@@ -43,7 +43,6 @@ func App() *buffalo.App {
 				cors.AllowAll().Handler,
 			},
 			SessionName: "_after_life_session",
-
 		})
 
 		// Automatically redirect to SSL
@@ -74,13 +73,12 @@ func App() *buffalo.App {
 
 		app.ANY("/graphql", AuthMiddleware(GraphqlIndex, false))
 
-
 		file := app.Group("/file")
 
 		file.POST("/", AuthMiddleware(FilesSaveFile))
 		file.DELETE("/{id}", AuthMiddleware(FilesDeleteFile))
-		file.GET("/delete/{id}",  AuthMiddleware(FilesDeleteFile))
-		file.GET("/serve/{folder}/{filename}",AuthMiddleware(FilesServeFile))
+		file.GET("/delete/{id}", AuthMiddleware(FilesDeleteFile))
+		file.GET("/serve/{folder}/{filename}", AuthMiddleware(FilesServeFile))
 	}
 
 	return app
@@ -119,6 +117,5 @@ func postParse(c buffalo.Context) (buffalo.Context, error) {
 	c.Request().PostForm = vals
 	return c, nil
 }
-
 
 //TODO::implement global error handler so to return JSON instead of strings when returning non 200 http codes
