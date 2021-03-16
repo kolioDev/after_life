@@ -1,0 +1,5 @@
+add_foreign_key("instructions", "will_id", {"wills": ["id"]}, {
+    "name": "wills_fk_id",
+    "on_delete": "CASCADE",
+})
+

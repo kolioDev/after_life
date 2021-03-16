@@ -1,0 +1,1 @@
+drop_foreign_key("instructions", "wills_fk_id", {"if_exists": true})
