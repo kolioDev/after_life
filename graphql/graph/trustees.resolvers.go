@@ -6,12 +6,12 @@ package graph
 import (
 	"context"
 	"database/sql"
-	"github.com/pkg/errors"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/gobuffalo/nulls"
 	"github.com/kolioDev/after_life/graphql/graph/model"
 	"github.com/kolioDev/after_life/models"
+	errs "github.com/pkg/errors"
 	"github.com/vektah/gqlparser/gqlerror"
 )
 
@@ -32,9 +32,9 @@ func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model
 	}
 	if verrs.HasAny() {
 		graphql.AddError(ctx, &gqlerror.Error{
-			Message: "Validation errors",
+			Message: "Validation errs",
 			Extensions: map[string]interface{}{
-				"validation_errors": verrs.Errors,
+				"validation_errs": verrs.Errors,
 			},
 		})
 		return nil, nil
@@ -46,13 +46,13 @@ func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model
 func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model.UpdateTrustee) (*model.Trustee, error) {
 	t := &models.Trustee{}
 	if err := TX.Find(t, trusteeInput.ID); err != nil {
-		if errors.Cause(err) != sql.ErrNoRows {
+		if errs.Cause(err) != sql.ErrNoRows {
 			graphql.AddError(ctx, &gqlerror.Error{
 				Message: "Cannot find trustee",
 			})
 			return nil, nil
 		}
-		return nil, errors.WithStack(err)
+		return nil, errs.WithStack(err)
 	}
 
 	if trusteeInput.Name != nil {
@@ -86,14 +86,14 @@ func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model
 	verrs, err := t.Update(TX)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, errs.WithStack(err)
 	}
 
 	if verrs.HasAny() {
 		graphql.AddError(ctx, &gqlerror.Error{
-			Message: "Validation errors",
+			Message: "Validation errs",
 			Extensions: map[string]interface{}{
-				"validation_errors": verrs.Errors,
+				"validation_errs": verrs.Errors,
 			},
 		})
 		return nil, nil
