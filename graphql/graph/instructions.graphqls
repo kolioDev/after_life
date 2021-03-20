@@ -12,7 +12,7 @@ type Instruction {
 input  InstructionInput {
     index: Int!
     text: String
-    # picture: File
-    # audio: File
-    # video: File
+    picture: File
+    audio: File
+    video: File
 }
