@@ -7,8 +7,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kolioDev//after_life/graphql/graph/generated"
-	"github.com/kolioDev//after_life/graphql/graph/model"
+	"github.com/kolioDev/gqlgen-todos/graph/generated"
+	"github.com/kolioDev/gqlgen-todos/graph/model"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {

@@ -2,6 +2,9 @@
 #
 # https://gqlgen.com/getting-started/
 
+scalar Time
+scalar UUID
+
 type Todo {
   id: ID!
   text: String!
