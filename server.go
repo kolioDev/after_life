@@ -7,7 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/kolioDev/after_life/graphql/graph"
+	"github.com/kolioDev/after_life/graphql"
 	"github.com/kolioDev/after_life/graphql/generated"
 )
 

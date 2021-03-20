@@ -20,7 +20,7 @@ require (
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/validate v2.0.4+incompatible
 	github.com/jlaffaye/ftp v0.0.0-20210307004419-5d4190119067
-	github.com/kolioDev/after_life/graphql v0.0.0-20210228125009-2c986009b5d7
+	github.com/kolioDev/after_life/graphql v0.0.0-20210320213541-fdda3fc14036
 	github.com/markbates/goth v1.67.1
 	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.9.1
