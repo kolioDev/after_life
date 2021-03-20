@@ -26,10 +26,11 @@ type Will {
 input WillInput {
     title: String!
     priority: Int
-    instructions : [InstructionInput!]
-    video: FileInput
-    audio: FileInput
-    pictute: FileInput
+    # instructions : [String!]
+    # instructions : [InstructionInput!]
+    # video: FileInput
+    # audio: FileInput
+    # pictute: FileInput
 }
 
 

@@ -27,5 +27,7 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/tjarratt/babble v0.0.0-20191209142150-eecdf8c2339d
 	github.com/unrolled/secure v1.0.8
+	github.com/vektah/gqlparser v1.3.1
+	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/crypto v0.0.0-20210317152858-513c2a44f670
 )

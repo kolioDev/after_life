@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/kolioDev/after_life/graphql/scalars"
+	"github.com/kolioDev/after_life/scalars"
 )
 
 type File struct {
@@ -21,6 +21,13 @@ type File struct {
 	Size      int          `json:"size"`
 }
 
+type FileInput struct {
+	URL  string `json:"url"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+	Size int    `json:"size"`
+}
+
 type Instruction struct {
 	ID        scalars.UUID `json:"id"`
 	CreatedAt time.Time    `json:"createdAt"`
@@ -30,6 +37,11 @@ type Instruction struct {
 	Picture   *File        `json:"picture"`
 	Audio     *File        `json:"audio"`
 	Video     *File        `json:"video"`
+}
+
+type InstructionInput struct {
+	Index int     `json:"index"`
+	Text  *string `json:"text"`
 }
 
 type Trustee struct {

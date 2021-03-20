@@ -1,4 +1,4 @@
-package graph
+package resolvers
 
 // This file will be automatically regenerated based on the schema, any resolver implementations
 // will be copied through when generating and any unknown code will be moved to the end.
@@ -6,12 +6,12 @@ package graph
 import (
 	"context"
 	"database/sql"
-	"github.com/pkg/errors"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/gobuffalo/nulls"
-	"github.com/kolioDev/after_life/graphql/graph/model"
+	"github.com/kolioDev/after_life/graphql/model"
 	"github.com/kolioDev/after_life/models"
+	errs "github.com/pkg/errors"
 	"github.com/vektah/gqlparser/gqlerror"
 )
 
@@ -46,13 +46,13 @@ func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model
 func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model.UpdateTrustee) (*model.Trustee, error) {
 	t := &models.Trustee{}
 	if err := TX.Find(t, trusteeInput.ID); err != nil {
-		if errors.Cause(err) != sql.ErrNoRows {
+		if errs.Cause(err) != sql.ErrNoRows {
 			graphql.AddError(ctx, &gqlerror.Error{
 				Message: "Cannot find trustee",
 			})
 			return nil, nil
 		}
-		return nil, errors.WithStack(err)
+		return nil, errs.WithStack(err)
 	}
 
 	if trusteeInput.Name != nil {
@@ -86,7 +86,7 @@ func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model
 	verrs, err := t.Update(TX)
 
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, errs.WithStack(err)
 	}
 
 	if verrs.HasAny() {

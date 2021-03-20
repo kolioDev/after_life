@@ -3,8 +3,8 @@ package actions
 import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/gobuffalo/buffalo"
-	"github.com/kolioDev/after_life/graphql/graph"
-	"github.com/kolioDev/after_life/graphql/graph/generated"
+	"github.com/kolioDev/after_life/graph"
+	"github.com/kolioDev/after_life/graph/generated"
 	"github.com/kolioDev/after_life/models"
 )
 
