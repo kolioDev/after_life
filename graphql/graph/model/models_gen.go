@@ -2,19 +2,150 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+import (
+	"fmt"
+	"io"
+	"strconv"
+	"time"
+
+	"github.com/kolioDev/after_life/graphql/scalars"
+)
+
+type File struct {
+	ID        scalars.UUID `json:"id"`
+	CreatedAt time.Time    `json:"createdAt"`
+	UpdatedAt time.Time    `json:"updatedAt"`
+	URL       string       `json:"url"`
+	Name      string       `json:"name"`
+	Type      string       `json:"type"`
+	Size      int          `json:"size"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type Instruction struct {
+	ID        scalars.UUID `json:"id"`
+	CreatedAt time.Time    `json:"createdAt"`
+	UpdatedAt time.Time    `json:"updatedAt"`
+	Index     int          `json:"index"`
+	Text      *string      `json:"text"`
+	Picture   *File        `json:"picture"`
+	Audio     *File        `json:"audio"`
+	Video     *File        `json:"video"`
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type Trustee struct {
+	ID           scalars.UUID `json:"id"`
+	CreatedAt    time.Time    `json:"createdAt"`
+	UpdatedAt    time.Time    `json:"updatedAt"`
+	Relationship TrusteeType  `json:"relationship"`
+	Name         string       `json:"name"`
+	Email        string       `json:"email"`
+	Phone        string       `json:"phone"`
+	FacebookLink *string      `json:"facebookLink"`
+	TwitterLink  *string      `json:"twitterLink"`
+}
+
+type TrusteeInput struct {
+	Name                  string      `json:"name"`
+	Relationship          TrusteeType `json:"relationship"`
+	Email                 string      `json:"email"`
+	Phone                 string      `json:"phone"`
+	FacebookLink          *string     `json:"facebookLink"`
+	TwitterLink           *string     `json:"twitterLink"`
+	AdditionalInformation *string     `json:"additionalInformation"`
+}
+
+type UpdateTrustee struct {
+	ID                    scalars.UUID `json:"id"`
+	Name                  *string      `json:"name"`
+	Relationship          *TrusteeType `json:"relationship"`
+	Email                 *string      `json:"email"`
+	Phone                 *string      `json:"phone"`
+	FacebookLink          *string      `json:"facebookLink"`
+	TwitterLink           *string      `json:"twitterLink"`
+	AdditionalInformation *string      `json:"additionalInformation"`
+}
+
+type Version struct {
+	Number string `json:"number"`
+}
+
+type Will struct {
+	ID           scalars.UUID   `json:"id"`
+	CreatedAt    time.Time      `json:"createdAt"`
+	UpdatedAt    time.Time      `json:"updatedAt"`
+	Title        string         `json:"title"`
+	Priority     *int           `json:"priority"`
+	Instructions []*Instruction `json:"instructions"`
+	Video        *File          `json:"video"`
+	Audio        *File          `json:"audio"`
+	Pictute      *File          `json:"pictute"`
+	Trustees     []*Trustee     `json:"trustees"`
+}
+
+type WillInput struct {
+	Title    string `json:"title"`
+	Priority *int   `json:"priority"`
+}
+
+type TrusteeType string
+
+const (
+	TrusteeTypeFather        TrusteeType = "father"
+	TrusteeTypeMother        TrusteeType = "mother"
+	TrusteeTypeOtherRelative TrusteeType = "other_relative"
+	TrusteeTypeBestFriend    TrusteeType = "best_friend"
+	TrusteeTypeSchoolFriend  TrusteeType = "school_friend"
+	TrusteeTypeCollegeFriend TrusteeType = "college_friend"
+	TrusteeTypeOtherFriend   TrusteeType = "other_friend"
+	TrusteeTypeHusband       TrusteeType = "husband"
+	TrusteeTypeWife          TrusteeType = "wife"
+	TrusteeTypeGirlfriend    TrusteeType = "girlfriend"
+	TrusteeTypeBoyfriend     TrusteeType = "boyfriend"
+	TrusteeTypeFiance        TrusteeType = "fiance"
+	TrusteeTypeAcquaintance  TrusteeType = "acquaintance"
+)
+
+var AllTrusteeType = []TrusteeType{
+	TrusteeTypeFather,
+	TrusteeTypeMother,
+	TrusteeTypeOtherRelative,
+	TrusteeTypeBestFriend,
+	TrusteeTypeSchoolFriend,
+	TrusteeTypeCollegeFriend,
+	TrusteeTypeOtherFriend,
+	TrusteeTypeHusband,
+	TrusteeTypeWife,
+	TrusteeTypeGirlfriend,
+	TrusteeTypeBoyfriend,
+	TrusteeTypeFiance,
+	TrusteeTypeAcquaintance,
+}
+
+func (e TrusteeType) IsValid() bool {
+	switch e {
+	case TrusteeTypeFather, TrusteeTypeMother, TrusteeTypeOtherRelative, TrusteeTypeBestFriend, TrusteeTypeSchoolFriend, TrusteeTypeCollegeFriend, TrusteeTypeOtherFriend, TrusteeTypeHusband, TrusteeTypeWife, TrusteeTypeGirlfriend, TrusteeTypeBoyfriend, TrusteeTypeFiance, TrusteeTypeAcquaintance:
+		return true
+	}
+	return false
+}
+
+func (e TrusteeType) String() string {
+	return string(e)
+}
+
+func (e *TrusteeType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TrusteeType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TrusteeType", str)
+	}
+	return nil
+}
+
+func (e TrusteeType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
