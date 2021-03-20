@@ -5,15 +5,27 @@
 scalar Time
 scalar UUID
 
-type Version {
-    number: String!
+type Todo {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
 }
 
 type Query {
-    version: Version!
+  todos: [Todo!]!
 }
 
+input NewTodo {
+  text: String!
+  userId: String!
+}
 
 type Mutation {
-    version: Version!
+  createTodo(input: NewTodo!): Todo!
 }
