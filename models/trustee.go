@@ -16,7 +16,7 @@ import (
 
 	"github.com/gobuffalo/validate"
 
-	"github.com/kolioDev/after_life/graphql/graph/model"
+	"github.com/kolioDev/after_life/graphql/model"
 )
 
 type Trustee struct {
