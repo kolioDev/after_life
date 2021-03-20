@@ -1,5 +1,0 @@
-package subsub
-
-func PrintSubSub(){
-	
-}
