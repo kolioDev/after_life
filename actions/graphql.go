@@ -3,7 +3,7 @@ package actions
 import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/gobuffalo/buffalo"
-	"github.com/kolioDev/after_life/graphql"
+	"github.com/kolioDev/after_life/resolvers"
 	"github.com/kolioDev/after_life/graphql/generated"
 	"github.com/kolioDev/after_life/models"
 )
@@ -13,8 +13,8 @@ func GraphqlIndex(c buffalo.Context) error {
 	u := c.Value("current_user").(*models.User)
 	tx := models.DB //c.Value("tx").(*pop.Connection)
 
-	graph.SetUser(u)
-	graph.SetTX(tx)
+	resolvers.SetUser(u)
+	resolvers.SetTX(tx)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
 		Resolvers: &graph.Resolver{},
