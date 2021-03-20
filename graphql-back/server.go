@@ -8,10 +8,10 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/kolioDev/after_life/graphql/graph"
-	"github.com/kolioDev//after_life/graphql/graph/generated"
+	"github.com/kolioDev/after_life/graphql/graph/generated"
 )
 
-const defaultPort = "8080"
+const defaultPort = "3001"
 
 func main() {
 	port := os.Getenv("PORT")
