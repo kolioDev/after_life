@@ -20,12 +20,13 @@ require (
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/validate v2.0.4+incompatible
 	github.com/jlaffaye/ftp v0.0.0-20210307004419-5d4190119067
-	github.com/kolioDev/after_life/graphql v0.0.0-20210228125009-2c986009b5d7
 	github.com/markbates/goth v1.67.1
 	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.7.0
 	github.com/tjarratt/babble v0.0.0-20191209142150-eecdf8c2339d
 	github.com/unrolled/secure v1.0.8
+	github.com/vektah/gqlparser v1.3.1
+	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/crypto v0.0.0-20210317152858-513c2a44f670
 )
