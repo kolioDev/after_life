@@ -128,7 +128,7 @@ func AuthOAuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	if verrs.HasAny() {
+	if verrs!=nil && verrs.HasAny() {
 		return c.Render(406, r.JSON(verrs.Errors))
 	}
 

@@ -40,7 +40,8 @@ func App() *buffalo.App {
 		app = buffalo.New(buffalo.Options{
 			Env: ENV,
 			PreWares: []buffalo.PreWare{
-				cors.AllowAll().Handler,
+				// cors.AllowAll().Handler,
+				cors.Default().Handler,
 			},
 			SessionName: "_after_life_session",
 		})

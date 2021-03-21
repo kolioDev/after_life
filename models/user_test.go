@@ -23,7 +23,7 @@ func (ms *ModelSuite) Test_User_Create() {
 	ms.DBDelta(1, "users", func() {
 		verrs, err = u.Create(ms.DB)
 		ms.NoError(err)
-		ms.False(verrs.HasAny())
+		ms.False(verrs != nil && verrs.HasAny())
 	})
 
 }
