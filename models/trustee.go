@@ -9,7 +9,7 @@ import (
 	"github.com/gobuffalo/nulls"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate/validators"
-	"github.com/kolioDev/after_life/graphql/scalars"
+	"github.com/kolioDev/after_life/scalars"
 	"github.com/pkg/errors"
 
 	"github.com/gobuffalo/pop"

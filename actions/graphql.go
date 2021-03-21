@@ -17,7 +17,7 @@ func GraphqlIndex(c buffalo.Context) error {
 	resolvers.SetTX(tx)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
-		Resolvers: &graph.Resolver{},
+		Resolvers: &resolvers.Resolver{},
 	}))
 	srv.ServeHTTP(c.Response(), c.Request())
 
