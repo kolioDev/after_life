@@ -1,8 +1,10 @@
 package models
 
 import (
-	"github.com/gobuffalo/uuid"
 	"log"
+
+	"github.com/gobuffalo/nulls"
+	"github.com/gobuffalo/uuid"
 )
 
 func (ms *ModelSuite) Test_Instruction_Create() {
@@ -13,7 +15,7 @@ func (ms *ModelSuite) Test_Instruction_Create() {
 
 	w := &Will{
 		Title:    "Do something for my will 1",
-		Priority: 1,
+		Priority: nulls.NewUInt32(1),
 		UserID:   u.ID,
 	}
 
@@ -77,7 +79,7 @@ func (ms *ModelSuite) Test_Instructions_Create() {
 
 	w := &Will{
 		Title:    "Do something for my will 1",
-		Priority: 1,
+		Priority: nulls.NewUInt32(1),
 		UserID:   u.ID,
 	}
 

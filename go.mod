@@ -6,10 +6,12 @@ go 1.15
 
 require (
 	github.com/99designs/gqlgen v0.13.0
+	github.com/cockroachdb/cockroach-go v2.0.1+incompatible // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gobuffalo/buffalo v0.16.21
 	github.com/gobuffalo/buffalo-pop v1.23.1
 	github.com/gobuffalo/envy v1.9.0
+	github.com/gobuffalo/fizz v1.11.0 // indirect
 	github.com/gobuffalo/httptest v1.5.0
 	github.com/gobuffalo/mw-forcessl v0.0.0-20200131175327-94b2bd771862
 	github.com/gobuffalo/mw-paramlogger v1.0.0
@@ -20,7 +22,6 @@ require (
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/validate v2.0.4+incompatible
 	github.com/jlaffaye/ftp v0.0.0-20210307004419-5d4190119067
-	github.com/kolioDev/after_life/graphql v0.0.0-20210320213541-fdda3fc14036
 	github.com/markbates/goth v1.67.1
 	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.9.1

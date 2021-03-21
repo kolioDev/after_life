@@ -268,8 +268,6 @@ func AuthRefreshToken(c buffalo.Context) error {
 		"refresh_token":     s.RefreshToken,
 		"profile_confirmed": uc.Confirmed,
 	}))
-
-	return nil
 }
 
 /**

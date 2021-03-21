@@ -72,6 +72,7 @@ func App() *buffalo.App {
 		user.POST("/confirm/keys", AuthMiddleware(UsersConfirmKeysSeen, true))
 
 		app.ANY("/graphql", AuthMiddleware(GraphqlIndex, false))
+		app.ANY("/graphql-playground", GraphqlPlayground)
 
 		file := app.Group("/file")
 

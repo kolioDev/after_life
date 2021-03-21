@@ -15,3 +15,9 @@ Buffalo ships with a command that will watch your application and automatically 
 
 If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you should see a "Welcome to Buffalo!" page.
 
+### Graphql
+after_life usase graphql. To play aroung go to http://127.0.0.1:3000/graphql-playground
+
+To generate go files based on grapql files - 
+
+	$ go run github.com/99designs/gqlgen generate
