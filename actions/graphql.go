@@ -27,7 +27,7 @@ func GraphqlIndex(c buffalo.Context) error {
 }
 
 func GraphqlPlayground(c buffalo.Context) error {
-	handler := playground.Handler("GraphQL playground", "/query")
+	handler := playground.Handler("GraphQL playground", "/graphql")
 	handler(c.Response(), c.Request())
 	return nil
 }
