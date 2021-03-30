@@ -93,12 +93,18 @@ func AuthOAuthCallback(c buffalo.Context) error {
 		}
 
 		//Log in existing user
-		if exists && uc.Confirmed {
+		if uc.Confirmed {
 			return createSessAndRedirect(u)
 		} else {
+			uId := ""
+			if uc != nil {
+				uId = uc.UserID.String()
+			}
 			return c.Redirect(303,
 				envy.Get("FRONTEND_URL", "127.0.0.1:8080")+
-					envy.Get("FRONTEND_AUTH_ERROR_PATH", "/oath/error/"),
+					strings.Replace(
+						envy.Get("FRONTEND_AUTH_ERROR_PATH", "/oath/error/"),
+						"{user_id}", uId, 1),
 			)
 		}
 
@@ -128,7 +134,7 @@ func AuthOAuthCallback(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	if verrs!=nil && verrs.HasAny() {
+	if verrs != nil && verrs.HasAny() {
 		return c.Render(406, r.JSON(verrs.Errors))
 	}
 
