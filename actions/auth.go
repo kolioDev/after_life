@@ -340,12 +340,15 @@ func AuthResetSignUp(c buffalo.Context) error {
 //params - true = do not require the user to be confirmed
 func AuthMiddleware(next buffalo.Handler, params ...bool) buffalo.Handler {
 	return func(c buffalo.Context) error {
-
 		parsedC, _ := postParse(c)
 		tknStr := parsedC.Request().PostForm.Get("_token")
 
 		if tknStr == "" {
 			tknStr = c.Param("_token")
+		}
+
+		if tknStr == "" {
+			tknStr = strings.Replace(c.Request().Header.Get("Authorization"), "Bearer ", "", 1)
 		}
 
 		claims, err := helpers.DecodeJWT(tknStr)
