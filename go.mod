@@ -18,6 +18,7 @@ require (
 	github.com/gobuffalo/nulls v0.4.0
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobuffalo/pop v4.13.1+incompatible
+	github.com/gobuffalo/pop/v5 v5.3.0 // indirect
 	github.com/gobuffalo/suite v2.8.2+incompatible
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/validate v2.0.4+incompatible
@@ -28,7 +29,6 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/tjarratt/babble v0.0.0-20191209142150-eecdf8c2339d
 	github.com/unrolled/secure v1.0.8
-	github.com/vektah/gqlparser v1.3.1
 	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/crypto v0.0.0-20210317152858-513c2a44f670
 )

@@ -12,10 +12,11 @@ import (
 	"github.com/kolioDev/after_life/graphql/model"
 	"github.com/kolioDev/after_life/models"
 	errs "github.com/pkg/errors"
-	"github.com/vektah/gqlparser/gqlerror"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model.TrusteeInput) (*model.Trustee, error) {
+
 	t := models.Trustee{
 		Name:           trusteeInput.Name,
 		Relationship:   trusteeInput.Relationship.String(),
@@ -31,11 +32,16 @@ func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model
 		return nil, err
 	}
 	if verrs.HasAny() {
+
+		var extensions = map[string]interface{}{}
+
+		for key, errs := range verrs.Errors {
+			extensions[key] = errs[0]
+		}
+
 		graphql.AddError(ctx, &gqlerror.Error{
-			Message: "Validation errors",
-			Extensions: map[string]interface{}{
-				"validation_errors": verrs.Errors,
-			},
+			Message:    "Validation errors",
+			Extensions: extensions,
 		})
 		return nil, nil
 	}
@@ -90,11 +96,15 @@ func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model
 	}
 
 	if verrs.HasAny() {
+		var extensions = map[string]interface{}{}
+
+		for key, errs := range verrs.Errors {
+			extensions[key] = errs[0]
+		}
+
 		graphql.AddError(ctx, &gqlerror.Error{
-			Message: "Validation errors",
-			Extensions: map[string]interface{}{
-				"validation_errors": verrs.Errors,
-			},
+			Message:    "Validation errors",
+			Extensions: extensions,
 		})
 		return nil, nil
 	}
