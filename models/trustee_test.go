@@ -51,7 +51,7 @@ func (ms *ModelSuite) Test_Trustee_Create() {
 	})
 
 	t.Email = "invalid.fmail.com"
-	t.Name = "shrt"
+	t.Name = "a"
 	t.Phone = "go6o"
 	t.Relationship = "qas"
 	t.FacebookLink = nulls.NewString("http://www.twitter.com/ueer.sssa")
@@ -100,7 +100,7 @@ func (ms *ModelSuite) Test_Trustee_Update() {
 	})
 
 	t.UserID = u.ID
-	t.Name = "inval"
+	t.Name = "i"
 	ms.DBDelta(0, "trustees", func() {
 		verrs, err := t.Update(ms.DB)
 		ms.NoError(err)

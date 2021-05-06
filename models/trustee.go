@@ -76,9 +76,9 @@ func (t *Trustee) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Name: "email", Field: t.Email},
 		&validators.StringIsPresent{Name: "phone", Field: t.Phone},
 
-		&validators.StringLengthInRange{Name: "name", Field: t.Name, Min: 6, Max: 200},
+		&validators.StringLengthInRange{Name: "name", Field: t.Name, Min: 2, Max: 250},
 		&validators.RegexMatch{Name: "relationship", Field: t.Relationship, Expr: fmt.Sprintf("(%s)", strings.Join(TRUSTEE_RELATIONSHIP_TYPES, "|")), Message: "invalid relationship type"},
-		&validators.RegexMatch{Name: "phone", Field: t.Phone, Expr: `^(\+|00)\d{9,12}$`, Message: "invalid phone"},
+		&validators.RegexMatch{Name: "phone", Field: t.Phone, Expr: `^(\+|00)\d{6,13}$`, Message: "invalid phone"},
 		&validators.EmailIsPresent{Name: "email", Field: t.Email},
 
 		&validators.StringLengthInRange{Name: "additional_info", Min: 0, Max: 500, Field: t.AdditionalInfo.String},
