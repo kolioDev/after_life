@@ -16,7 +16,6 @@ import (
 )
 
 func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model.TrusteeInput) (*model.Trustee, error) {
-
 	t := models.Trustee{
 		Name:           trusteeInput.Name,
 		Relationship:   trusteeInput.Relationship.String(),

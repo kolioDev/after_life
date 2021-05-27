@@ -154,15 +154,16 @@ func (t *Trustees) GetForUser(tx *pop.Connection, userID uuid.UUID, orderBy stri
 
 func (t Trustee) ToGraphQL() *model.Trustee {
 	return &model.Trustee{
-		ID:           scalars.ModelsUUID2GhqlUUID(t.ID),
-		CreatedAt:    t.CreatedAt,
-		UpdatedAt:    t.UpdatedAt,
-		Relationship: model.TrusteeType(t.Relationship),
-		Name:         t.Name,
-		Email:        t.Email,
-		Phone:        t.Phone,
-		FacebookLink: NullableToString(t.FacebookLink),
-		TwitterLink:  NullableToString(t.TwitterLink),
+		ID:                    scalars.ModelsUUID2GhqlUUID(t.ID),
+		CreatedAt:             t.CreatedAt,
+		UpdatedAt:             t.UpdatedAt,
+		Relationship:          model.TrusteeType(t.Relationship),
+		Name:                  t.Name,
+		Email:                 t.Email,
+		Phone:                 t.Phone,
+		FacebookLink:          NullableToString(t.FacebookLink),
+		TwitterLink:           NullableToString(t.TwitterLink),
+		AdditionalInformation: NullableToString(t.AdditionalInfo),
 	}
 }
 

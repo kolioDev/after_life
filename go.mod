@@ -2,23 +2,20 @@ module github.com/kolioDev/after_life
 
 replace github.com/gobuffalo/buffalo-pop/pop => /gobuffalo/buffalo-pop/v2/pop
 
-go 1.15
+go 1.16
 
 require (
 	github.com/99designs/gqlgen v0.13.0
-	github.com/cockroachdb/cockroach-go v2.0.1+incompatible // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/gobuffalo/buffalo v0.16.21
+	github.com/gobuffalo/buffalo v0.16.23
 	github.com/gobuffalo/buffalo-pop v1.23.1
 	github.com/gobuffalo/envy v1.9.0
-	github.com/gobuffalo/fizz v1.11.0 // indirect
 	github.com/gobuffalo/httptest v1.5.0
 	github.com/gobuffalo/mw-forcessl v0.0.0-20200131175327-94b2bd771862
 	github.com/gobuffalo/mw-paramlogger v1.0.0
 	github.com/gobuffalo/nulls v0.4.0
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobuffalo/pop v4.13.1+incompatible
-	github.com/gobuffalo/pop/v5 v5.3.0 // indirect
 	github.com/gobuffalo/suite v2.8.2+incompatible
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/validate v2.0.4+incompatible
@@ -27,8 +24,8 @@ require (
 	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.7.0
-	github.com/tjarratt/babble v0.0.0-20191209142150-eecdf8c2339d
-	github.com/unrolled/secure v1.0.8
+	github.com/tjarratt/babble v0.0.0-20210505082055-cbca2a4833c1
+	github.com/unrolled/secure v1.0.9
 	github.com/vektah/gqlparser/v2 v2.1.0
-	golang.org/x/crypto v0.0.0-20210317152858-513c2a44f670
+	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
 )

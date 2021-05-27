@@ -25,16 +25,17 @@ type Trustee {
     relationship: TrusteeType!
     name: String!
     email: String!
-    phone : String!
+    phone: String!
     facebookLink: String
     twitterLink: String
+    additionalInformation: String
 }
 
 input TrusteeInput {
     name: String!
     relationship: TrusteeType!
     email: String!
-    phone : String!
+    phone: String!
     facebookLink: String
     twitterLink: String
     additionalInformation: String
@@ -45,7 +46,7 @@ input UpdateTrustee {
     name: String
     relationship: TrusteeType
     email: String
-    phone : String
+    phone: String
     facebookLink: String
     twitterLink: String
     additionalInformation: String

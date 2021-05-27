@@ -45,15 +45,16 @@ type InstructionInput struct {
 }
 
 type Trustee struct {
-	ID           scalars.UUID `json:"id"`
-	CreatedAt    time.Time    `json:"createdAt"`
-	UpdatedAt    time.Time    `json:"updatedAt"`
-	Relationship TrusteeType  `json:"relationship"`
-	Name         string       `json:"name"`
-	Email        string       `json:"email"`
-	Phone        string       `json:"phone"`
-	FacebookLink *string      `json:"facebookLink"`
-	TwitterLink  *string      `json:"twitterLink"`
+	ID                    scalars.UUID `json:"id"`
+	CreatedAt             time.Time    `json:"createdAt"`
+	UpdatedAt             time.Time    `json:"updatedAt"`
+	Relationship          TrusteeType  `json:"relationship"`
+	Name                  string       `json:"name"`
+	Email                 string       `json:"email"`
+	Phone                 string       `json:"phone"`
+	FacebookLink          *string      `json:"facebookLink"`
+	TwitterLink           *string      `json:"twitterLink"`
+	AdditionalInformation *string      `json:"additionalInformation"`
 }
 
 type TrusteeInput struct {
