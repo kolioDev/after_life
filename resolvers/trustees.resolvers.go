@@ -11,6 +11,7 @@ import (
 	"github.com/gobuffalo/nulls"
 	"github.com/kolioDev/after_life/graphql/model"
 	"github.com/kolioDev/after_life/models"
+	"github.com/kolioDev/after_life/scalars"
 	errs "github.com/pkg/errors"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
@@ -122,4 +123,16 @@ func (r *queryResolver) Trustees(ctx context.Context, orderBy *string, order *st
 	}
 
 	return trustees.ToGraphQL(), nil
+}
+
+func (r *queryResolver) Trustee(ctx context.Context, id scalars.UUID) (*model.Trustee, error) {
+	trustee := &models.Trustee{}
+
+	err := TX.Find(trustee, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return trustee.ToGraphQL(), nil
 }

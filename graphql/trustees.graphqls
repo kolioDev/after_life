@@ -55,6 +55,7 @@ input UpdateTrustee {
 
 extend type Query {
     trustees(orderBy: String, order: String): [Trustee!]
+    trustee(id: UUID!): Trustee!
 }
 
 

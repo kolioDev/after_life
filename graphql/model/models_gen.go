@@ -91,7 +91,7 @@ type Will struct {
 	Instructions []*Instruction `json:"instructions"`
 	Video        *File          `json:"video"`
 	Audio        *File          `json:"audio"`
-	Pictute      *File          `json:"pictute"`
+	Picture      *File          `json:"picture"`
 	Trustees     []*Trustee     `json:"trustees"`
 }
 

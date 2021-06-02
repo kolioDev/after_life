@@ -19,7 +19,7 @@ type Will {
     instructions: [Instruction!]
     video: File
     audio: File
-    pictute: File
+    picture: File
     trustees: [Trustee!]
 }
 
