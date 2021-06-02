@@ -80,7 +80,7 @@ func App() *buffalo.App {
 		file.POST("/", AuthMiddleware(FilesSaveFile))
 		file.DELETE("/{id}", AuthMiddleware(FilesDeleteFile))
 		file.GET("/delete/{id}", AuthMiddleware(FilesDeleteFile))
-		file.GET("/serve/{folder}/{filename}", AuthMiddleware(FilesServeFile))
+		file.GET("{folder}/{filename}", AuthMiddleware(FilesServeFile))
 	}
 
 	return app

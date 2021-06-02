@@ -3,19 +3,20 @@ package storage
 import (
 	"bytes"
 	"fmt"
-	"github.com/gobuffalo/envy"
-	"github.com/jlaffaye/ftp"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"time"
+
+	"github.com/gobuffalo/envy"
+	"github.com/jlaffaye/ftp"
+	"github.com/pkg/errors"
 )
 
 func getLocalStorage() string {
 	if envy.Get("GO_ENV", "development") == "test" {
-		return envy.Get("LOCAL_TEST_STORAGE_PATH", "storage_test/items")
+		return fmt.Sprintf("../%s", envy.Get("LOCAL_TEST_STORAGE_PATH", "storage_test/items"))
 	}
-	return envy.Get("LOCAL_STORAGE_PATH", "storage/items")
+	return fmt.Sprintf("../%s", envy.Get("LOCAL_STORAGE_PATH", "storage/items"))
 }
 
 // Save stores the file on ftp server or local disk
@@ -45,6 +46,8 @@ func Read(filename string) ([]byte, error) {
 	}
 
 	filename = fmt.Sprintf("%s/%s", getLocalStorage(), filename)
+	//TODO::delete
+	fmt.Println("##### filename", filename)
 	return readFromDisk(filename)
 }
 

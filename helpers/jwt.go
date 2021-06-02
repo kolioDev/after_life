@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-const JWT_VALID_TIME = 60 * 2 //seconds
+const JWT_VALID_TIME = 60 * 10 //seconds
 
 // Create the JWT key used to create the signature
 var jwtKey = []byte(envy.Get("JWT_TOKEN", "super_secret_jwt_token"))

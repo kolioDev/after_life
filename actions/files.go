@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"database/sql"
 	"fmt"
+	"io"
+	"path/filepath"
+	"time"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
 	"github.com/kolioDev/after_life/models"
 	"github.com/kolioDev/after_life/storage"
 	"github.com/pkg/errors"
-	"io"
-	"path/filepath"
-	"time"
 )
 
 // FilesSaveFile stores file on disk (or ftp) and makes data entry in the DB
@@ -41,7 +42,7 @@ func FilesSaveFile(c buffalo.Context) error {
 		filepath.Base(file.FileHeader.Filename))
 
 	f := models.File{
-		Url:      fmt.Sprintf("%s/%s", envy.Get("FILESERVER_URL", "http://127.0.0.1:3000/files"), filename),
+		Url:      fmt.Sprintf("%s/%s", envy.Get("FILESERVER_URL", "http://127.0.0.1:3000/file"), filename),
 		Filename: filepath.Base(filename),
 		FileSize: file.FileHeader.Size,
 		Path:     filepath.Dir(filename),

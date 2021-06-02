@@ -4,18 +4,19 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/httptest"
 	"github.com/gobuffalo/uuid"
 	"github.com/kolioDev/after_life/models"
-	"os"
-	"strings"
 )
 
 const testUploadFileName = "test.jpg"
 const testUploadPath = "images/" + testUploadFileName
 
-var storagePath = envy.Get("LOCAL_TEST_STORAGE_PATH", "storage_test/items")
+var storagePath = fmt.Sprintf("../%s", envy.Get("LOCAL_TEST_STORAGE_PATH", "storage_test/items"))
 
 var FILE_TYPES = []string{
 	"images", "videos", "audios",
@@ -95,7 +96,7 @@ func saveFile(as *ActionSuite, filename, filepath, token string) *models.File {
 
 	res, err := as.HTML("/file?_token=%s", token).MultiPartPost(f, httpF)
 	as.NoError(err)
-	as.Equal(200, res.Code)
+	as.Equalf(200, res.Code, "Expected http 200 but got %d (%s)", res.Code, res.Body.String())
 	as.NoError(json.Unmarshal(res.Body.Bytes(), &f))
 
 	//check if file is saved to disk

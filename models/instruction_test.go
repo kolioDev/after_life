@@ -1,8 +1,6 @@
 package models
 
 import (
-	"log"
-
 	"github.com/gobuffalo/nulls"
 	"github.com/gobuffalo/uuid"
 )
@@ -38,7 +36,6 @@ func (ms *ModelSuite) Test_Instruction_Create() {
 			i.ID = uuid.Nil
 			i.Index = k
 			i.Text = "Do that #2"
-			log.Println("#K", k)
 			verrs, err = i.Create(ms.DB, *w)
 			ms.NoError(err)
 			ms.Falsef(verrs.HasAny(), "Should not have verrs, but got %v", verrs.Errors)
