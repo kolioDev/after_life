@@ -46,8 +46,6 @@ func Read(filename string) ([]byte, error) {
 	}
 
 	filename = fmt.Sprintf("%s/%s", getLocalStorage(), filename)
-	//TODO::delete
-	fmt.Println("##### filename", filename)
 	return readFromDisk(filename)
 }
 

@@ -13,7 +13,6 @@ type UUID struct {
 }
 
 func MarshalUUID(id UUID) graphql.Marshaler {
-	fmt.Println("____15____ marshaling", id.String())
 	return graphql.WriterFunc(func(w io.Writer) {
 		io.WriteString(w, "\""+id.String()+"\"")
 	})

@@ -112,6 +112,27 @@ func (r *mutationResolver) UpdateTrustee(ctx context.Context, trusteeInput model
 	return t.ToGraphQL(), nil
 }
 
+func (r *mutationResolver) DeleteTrustee(ctx context.Context, id scalars.UUID) (*model.Trustee, error) {
+	trustee := &models.Trustee{}
+
+	if err := TX.Find(trustee, id); err != nil {
+		return nil, err
+	}
+
+	if err := TX.Destroy(trustee); err != nil {
+		return nil, err
+	}
+
+	if trustee.UserID != User.ID {
+		graphql.AddError(ctx, &gqlerror.Error{
+			Message: "User does not own trustee",
+		})
+		return nil, nil
+	}
+
+	return trustee.ToGraphQL(), nil
+}
+
 func (r *queryResolver) Trustees(ctx context.Context, orderBy *string, order *string) ([]*model.Trustee, error) {
 	var trustees models.Trustees
 
@@ -132,6 +153,13 @@ func (r *queryResolver) Trustee(ctx context.Context, id scalars.UUID) (*model.Tr
 
 	if err != nil {
 		return nil, err
+	}
+
+	if trustee.UserID != User.ID {
+		graphql.AddError(ctx, &gqlerror.Error{
+			Message: "User does not own trustee",
+		})
+		return nil, nil
 	}
 
 	return trustee.ToGraphQL(), nil
