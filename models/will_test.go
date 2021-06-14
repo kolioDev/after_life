@@ -1,7 +1,13 @@
 package models
 
-import "testing"
+func (ms *ModelSuite) Test_Will_Create() {
+	w := &Will{
+		Title: "My first will",
+	}
 
-func Test_Will(t *testing.T) {
-	t.Fatal("This test needs to be implemented!")
+	ms.DBDelta(1, "wills", func() {
+		ms.NoError(w.Create(ms.DB))
+	})
+
+	ms.Fail("Implement fully")
 }

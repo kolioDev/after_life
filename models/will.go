@@ -2,8 +2,9 @@ package models
 
 import (
 	"encoding/json"
-	"github.com/gobuffalo/nulls"
 	"time"
+
+	"github.com/gobuffalo/nulls"
 
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
@@ -51,6 +52,7 @@ func (w *Will) Validate(tx *pop.Connection) (*validate.Errors, error) {
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
 // This method is not required and may be deleted.
 func (w *Will) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
+	//TODO::implement
 	return validate.NewErrors(), nil
 }
 

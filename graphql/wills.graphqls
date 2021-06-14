@@ -14,7 +14,7 @@ type Will {
     id: UUID!
     createdAt: Time!
     updatedAt: Time!
-    title :    String!
+    title:    String!
     priority: Int
     instructions: [Instruction!]
     video: File
@@ -27,7 +27,7 @@ input WillInput {
     title: String!
     priority: Int
     # instructions : [String!]
-    # instructions : [InstructionInput!]
+    instructions: [InstructionInput!]
     # video: FileInput
     # audio: FileInput
     # pictute: FileInput

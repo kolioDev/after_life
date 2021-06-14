@@ -96,8 +96,9 @@ type Will struct {
 }
 
 type WillInput struct {
-	Title    string `json:"title"`
-	Priority *int   `json:"priority"`
+	Title        string              `json:"title"`
+	Priority     *int                `json:"priority"`
+	Instructions []*InstructionInput `json:"instructions"`
 }
 
 type TrusteeType string
