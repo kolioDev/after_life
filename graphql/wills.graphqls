@@ -35,3 +35,32 @@ extend type Query {
 extend type Mutation {
     createWill(willInput: WillInput!): Will!
 }
+
+
+# mutation{
+#   createWill(willInput: {
+# 			title:"go6o", 
+#     	priority:1
+#   		instructions: [
+#         {text:"instruction 1", index:0},
+#         {text:"instruction 2", index:1}
+#       ]
+#   }) {
+#     id
+#     title
+#     priority
+#     instructions{
+#       text, id
+#     }
+#   }
+# }
+
+# query{
+#   will(id:"52aaf1ad-d1e0-43c2-868c-cf3371ed2807"){
+#     title,
+#     instructions{
+#       text
+#     }
+#   }
+# }
+  

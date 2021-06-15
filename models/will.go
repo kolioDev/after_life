@@ -85,13 +85,26 @@ func (w *Will) Create(tx *pop.Connection, u *User) (*validate.Errors, error) {
 			tx.Destroy(w)
 			return verrs, err
 		}
+		is := &Instructions{}
+		if err := tx.Where("will_id=?", w.ID).All(is); err != nil {
+			return nil, err
+		}
+		w.Instructions = is
 	}
 
 	return verrs, err
 }
 
+func (w *Will) Get(tx *pop.Connection, id uuid.UUID) error {
+	//TODO:load instructions as well
+	err := tx.Find(w, id)
+	return err
+}
+
 func (w Will) ToGraphQL() *model.Will {
-	return &model.Will{
+	//TODO::addfiles
+
+	will := &model.Will{
 		ID:        scalars.ModelsUUID2GhqlUUID(w.ID),
 		CreatedAt: w.CreatedAt,
 		UpdatedAt: w.UpdatedAt,
@@ -100,9 +113,12 @@ func (w Will) ToGraphQL() *model.Will {
 			Int:   int(w.Priority.UInt32),
 			Valid: w.Priority.Valid,
 		}),
-		Instructions: w.Instructions.ToGraphQL(),
-		//TODO::addfiles
 	}
+
+	if will.Instructions != nil {
+		will.Instructions = w.Instructions.ToGraphQL()
+	}
+	return will
 }
 
 func (ws Wills) ToGraphQL() []*model.Will {

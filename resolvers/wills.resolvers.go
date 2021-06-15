@@ -58,7 +58,7 @@ func (r *mutationResolver) CreateWill(ctx context.Context, willInput model.WillI
 func (r *queryResolver) Will(ctx context.Context, id scalars.UUID) (*model.Will, error) {
 	will := &models.Will{}
 
-	err := TX.Find(will, id)
+	err := will.Get(TX, scalars.GhqlUUID2ModelsUUID(id))
 
 	if err != nil {
 		return nil, err

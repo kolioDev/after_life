@@ -16,6 +16,8 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
+// TODO::ask for auth keys on every operation
+
 func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model.TrusteeInput) (*model.Trustee, error) {
 	t := models.Trustee{
 		Name:           trusteeInput.Name,

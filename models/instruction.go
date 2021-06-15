@@ -105,7 +105,10 @@ func (is *Instructions) Create(tx *pop.Connection, w Will) (*validate.Errors, er
 		i.WillID = w.ID
 		newIs = append(newIs, i)
 	}
-	return tx.ValidateAndCreate(&newIs)
+	is = &newIs
+	verrs, err := tx.ValidateAndCreate(is)
+
+	return verrs, err
 }
 
 func (i Instruction) ToGraphQL() *model.Instruction {
