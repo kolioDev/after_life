@@ -5,12 +5,12 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/gobuffalo/nulls"
 	"github.com/kolioDev/after_life/graphql/model"
 	"github.com/kolioDev/after_life/models"
+	"github.com/kolioDev/after_life/scalars"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
@@ -55,6 +55,21 @@ func (r *mutationResolver) CreateWill(ctx context.Context, willInput model.WillI
 	return w.ToGraphQL(), nil
 }
 
-func (r *queryResolver) Will(ctx context.Context) ([]*model.Will, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) Will(ctx context.Context, id scalars.UUID) (*model.Will, error) {
+	will := &models.Will{}
+
+	err := TX.Find(will, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if will.UserID != User.ID {
+		graphql.AddError(ctx, &gqlerror.Error{
+			Message: "User does not own will",
+		})
+		return nil, nil
+	}
+
+	return will.ToGraphQL(), nil
 }

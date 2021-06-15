@@ -2,13 +2,6 @@
 #
 # https://gqlgen.com/getting-started/
 
-#Instructions *Instructions `json:"instructions" db:"-"`
-#Pictures     *File         `json:"pictures" db:"-"`
-#Videos       *File         `json:"videos" db:"-"`
-#Audios       *File         `json:"audios" db:"-"`
-#
-#UserID   uuid.UUID `json:"user_id" db:"user_id"`
-#Trustees *Trustees  `json:"trustees" db:"-"`
 
 type Will {
     id: UUID!
@@ -35,7 +28,7 @@ input WillInput {
 
 
 extend type Query {
-    will: [Will!]
+    will(id: UUID!): Will!
 }
 
 
