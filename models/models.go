@@ -29,3 +29,10 @@ func NullableToString(s nulls.String) *string {
 	}
 	return &s.String
 }
+
+func NullableToInt(i nulls.Int) *int {
+	if !i.Valid {
+		return nil
+	}
+	return &i.Int
+}

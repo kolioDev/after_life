@@ -1,6 +1,6 @@
 create_table("wills") {
 	t.Column("id", "uuid", {"primary": true})
 	t.Column("user_id", "uuid")
-	t.Column("priority", "integer", {"default": 0})
+	t.Column("priority", "integer", { "null": true})
 	t.Column("title", "string", {"size": 128})
 }

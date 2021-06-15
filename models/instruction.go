@@ -2,10 +2,13 @@ package models
 
 import (
 	"encoding/json"
-	"github.com/gobuffalo/nulls"
-	"github.com/gobuffalo/validate/validators"
 	"strconv"
 	"time"
+
+	"github.com/gobuffalo/nulls"
+	"github.com/gobuffalo/validate/validators"
+	"github.com/kolioDev/after_life/graphql/model"
+	"github.com/kolioDev/after_life/scalars"
 
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
@@ -107,4 +110,23 @@ func (is *Instructions) Create(tx *pop.Connection, w Will) (*validate.Errors, er
 		newIs = append(newIs, i)
 	}
 	return tx.ValidateAndCreate(&newIs)
+}
+
+func (i Instruction) ToGraphQL() *model.Instruction {
+	return &model.Instruction{
+		ID:        scalars.ModelsUUID2GhqlUUID(i.ID),
+		CreatedAt: i.CreatedAt,
+		UpdatedAt: i.UpdatedAt,
+		Index:     int(i.Index),
+		Text:      i.Text,
+		//TODO::addfiles
+	}
+}
+
+func (is Instructions) ToGraphQL() []*model.Instruction {
+	var QLInstructions []*model.Instruction
+	for _, i := range is {
+		QLInstructions = append(QLInstructions, i.ToGraphQL())
+	}
+	return QLInstructions
 }

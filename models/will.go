@@ -5,6 +5,9 @@ import (
 	"time"
 
 	"github.com/gobuffalo/nulls"
+	"github.com/gobuffalo/validate/validators"
+	"github.com/kolioDev/after_life/graphql/model"
+	"github.com/kolioDev/after_life/scalars"
 
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
@@ -46,13 +49,18 @@ func (w Wills) String() string {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (w *Will) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
+	return validate.Validate(
+		&validators.StringIsPresent{Name: "title", Field: w.Title},
+		&validators.StringLengthInRange{Name: "title", Field: w.Title, Min: 1, Max: 256},
+		&validators.IntIsGreaterThan{Name: "priority", Field: int(w.Priority.UInt32), Compared: -1},
+		&validators.IntIsLessThan{Name: "priority", Field: int(w.Priority.UInt32), Compared: 200},
+		&validators.UUIDIsPresent{Name: "user_id", Field: w.UserID},
+	), nil
 }
 
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
 // This method is not required and may be deleted.
 func (w *Will) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	//TODO::implement
 	return validate.NewErrors(), nil
 }
 
@@ -63,11 +71,38 @@ func (w *Will) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 //Creates instruction entry in the DB
-func (w *Will) Create(tx *pop.Connection) (*validate.Errors, error) {
-	//TODO::implement
-	//Validate all instructions
-	//Save instructions
+func (w *Will) Create(tx *pop.Connection, u *User) (*validate.Errors, error) {
+	w.UserID = u.ID
 
-	//validate&create will
-	return validate.NewErrors(), nil
+	if w.Instructions != nil {
+		verrs, err := w.Instructions.Create(tx, *w)
+		if verrs.HasAny() || err != nil {
+			return verrs, err
+		}
+	}
+
+	return tx.ValidateAndCreate(w)
+}
+
+func (w Will) ToGraphQL() *model.Will {
+	return &model.Will{
+		ID:        scalars.ModelsUUID2GhqlUUID(w.ID),
+		CreatedAt: w.CreatedAt,
+		UpdatedAt: w.UpdatedAt,
+		Title:     w.Title,
+		Priority: NullableToInt(nulls.Int{
+			Int:   int(w.Priority.UInt32),
+			Valid: w.Priority.Valid,
+		}),
+		Instructions: w.Instructions.ToGraphQL(),
+		//TODO::addfiles
+	}
+}
+
+func (ws Wills) ToGraphQL() []*model.Will {
+	var QLWills []*model.Will
+	for _, w := range ws {
+		QLWills = append(QLWills, w.ToGraphQL())
+	}
+	return QLWills
 }

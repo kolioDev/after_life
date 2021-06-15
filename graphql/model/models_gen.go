@@ -33,15 +33,15 @@ type Instruction struct {
 	CreatedAt time.Time    `json:"createdAt"`
 	UpdatedAt time.Time    `json:"updatedAt"`
 	Index     int          `json:"index"`
-	Text      *string      `json:"text"`
+	Text      string       `json:"text"`
 	Picture   *File        `json:"picture"`
 	Audio     *File        `json:"audio"`
 	Video     *File        `json:"video"`
 }
 
 type InstructionInput struct {
-	Index int     `json:"index"`
-	Text  *string `json:"text"`
+	Index int    `json:"index"`
+	Text  string `json:"text"`
 }
 
 type Trustee struct {

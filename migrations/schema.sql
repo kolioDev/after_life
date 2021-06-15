@@ -144,7 +144,7 @@ ALTER TABLE public.users OWNER TO postgres;
 CREATE TABLE public.wills (
     id uuid NOT NULL,
     user_id uuid NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
+    priority integer,
     title character varying(128) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

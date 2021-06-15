@@ -17,9 +17,16 @@ func SetTX(tx *pop.Connection) {
 	TX = tx
 }
 
-func GetNullable(s *string) nulls.String {
+func GetNullableString(s *string) nulls.String {
 	if s == nil {
 		return nulls.String{}
 	}
 	return nulls.NewString(*s)
+}
+
+func GetNullableInt(i *int) nulls.Int {
+	if i == nil {
+		return nulls.Int{}
+	}
+	return nulls.NewInt(*i)
 }

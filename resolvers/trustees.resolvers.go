@@ -22,9 +22,9 @@ func (r *mutationResolver) CreateTrustee(ctx context.Context, trusteeInput model
 		Relationship:   trusteeInput.Relationship.String(),
 		Phone:          trusteeInput.Phone,
 		Email:          trusteeInput.Email,
-		FacebookLink:   GetNullable(trusteeInput.FacebookLink),
-		TwitterLink:    GetNullable(trusteeInput.TwitterLink),
-		AdditionalInfo: GetNullable(trusteeInput.AdditionalInformation),
+		FacebookLink:   GetNullableString(trusteeInput.FacebookLink),
+		TwitterLink:    GetNullableString(trusteeInput.TwitterLink),
+		AdditionalInfo: GetNullableString(trusteeInput.AdditionalInformation),
 	}
 
 	verrs, err := t.Create(TX, User.ID)
@@ -136,8 +136,8 @@ func (r *mutationResolver) DeleteTrustee(ctx context.Context, id scalars.UUID) (
 func (r *queryResolver) Trustees(ctx context.Context, orderBy *string, order *string) ([]*model.Trustee, error) {
 	var trustees models.Trustees
 
-	nullableOrder := GetNullable(order)
-	nullableOrderBy := GetNullable(orderBy)
+	nullableOrder := GetNullableString(order)
+	nullableOrderBy := GetNullableString(orderBy)
 
 	if err := trustees.GetForUser(TX, User.ID, nullableOrderBy.String, nullableOrder.String); err != nil {
 		return nil, err

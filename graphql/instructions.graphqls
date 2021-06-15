@@ -3,7 +3,7 @@ type Instruction {
     createdAt: Time!
     updatedAt: Time!
     index: Int!
-    text: String
+    text: String!
     picture: File
     audio: File
     video: File
@@ -11,7 +11,7 @@ type Instruction {
 
 input  InstructionInput {
     index: Int!
-    text: String
+    text: String!
     # picture: File
     # audio: File
     # video: File
