@@ -51,7 +51,7 @@ func (w Wills) String() string {
 func (w *Will) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.StringIsPresent{Name: "title", Field: w.Title},
-		&validators.StringLengthInRange{Name: "title", Field: w.Title, Min: 1, Max: 256},
+		&validators.StringLengthInRange{Name: "title", Field: w.Title, Min: 2, Max: 256},
 		&validators.IntIsGreaterThan{Name: "priority", Field: int(w.Priority.UInt32), Compared: -1},
 		&validators.IntIsLessThan{Name: "priority", Field: int(w.Priority.UInt32), Compared: 200},
 		&validators.UUIDIsPresent{Name: "user_id", Field: w.UserID},
@@ -74,14 +74,20 @@ func (w *Will) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 func (w *Will) Create(tx *pop.Connection, u *User) (*validate.Errors, error) {
 	w.UserID = u.ID
 
+	verrs, err := tx.ValidateAndCreate(w)
+	if verrs.HasAny() || err != nil {
+		return verrs, err
+	}
+
 	if w.Instructions != nil {
 		verrs, err := w.Instructions.Create(tx, *w)
 		if verrs.HasAny() || err != nil {
+			tx.Destroy(w)
 			return verrs, err
 		}
 	}
 
-	return tx.ValidateAndCreate(w)
+	return verrs, err
 }
 
 func (w Will) ToGraphQL() *model.Will {

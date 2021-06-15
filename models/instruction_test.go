@@ -41,23 +41,7 @@ func (ms *ModelSuite) Test_Instruction_Create() {
 			ms.Falsef(verrs.HasAny(), "Should not have verrs, but got %v", verrs.Errors)
 		}
 	})
-
-	//invalid id
 	i.ID = uuid.Nil
-	i.Index = 2
-
-	verrs, err = i.Create(ms.DB, *w)
-	ms.NoError(err)
-	ms.Truef(verrs.HasAny(), "Should have verrs, but got %v", verrs.Errors)
-	ms.ElementsMatchf([]string{"index"}, verrs.Keys(), "arrays mismatched got %v", verrs.Keys())
-
-	//invalid id
-	i.Index = 20
-
-	verrs, err = i.Create(ms.DB, *w)
-	ms.NoError(err)
-	ms.Truef(verrs.HasAny(), "Should have verrs, but got %v", verrs.Errors)
-	ms.ElementsMatchf([]string{"index"}, verrs.Keys(), "arrays mismatched got %v", verrs.Keys())
 
 	//invalid will_id
 	i.Index = 0
@@ -91,15 +75,15 @@ func (ms *ModelSuite) Test_Instructions_Create() {
 		},
 		//Invalid
 		{
-			Index: 12,
-			Text:  "Do that #1",
+			Index: 1,
+			Text:  "",
 		},
 	}
 
 	ms.DBDelta(0, "instructions", func() {
 		verrs, err := ii.Create(ms.DB, *w)
 		ms.NoError(err)
-		ms.Truef(verrs.HasAny(), "Should not have verrs, but got %v", verrs.Errors)
+		ms.True(verrs.HasAny(), "Should have verrs, but none were found")
 	})
 
 }

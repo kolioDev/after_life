@@ -58,7 +58,7 @@ func (i Instructions) String() string {
 func (i *Instruction) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 
-		&validators.StringLengthInRange{Name: "text", Field: i.Text, Min: 0, Max: 500},
+		&validators.StringLengthInRange{Name: "text", Field: i.Text, Min: 2, Max: 500},
 
 		&validators.UUIDIsPresent{Name: "will_id", Field: i.WillID},
 		&validators.FuncValidator{Name: "will_id", Field: i.WillID.String(), Message: "There is now will with id %s", Fn: func() bool {
@@ -76,11 +76,7 @@ func (i *Instruction) Validate(tx *pop.Connection) (*validate.Errors, error) {
 				return false
 			}
 
-			if !ii.Index.Valid {
-				return i.Index == 0
-			}
-
-			return i.Index == uint(ii.Index.UInt32)+1
+			return true
 		}},
 	), nil
 }
