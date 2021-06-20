@@ -22,7 +22,7 @@ type Will struct {
 	Title    string       `json:"title" db:"title"`
 	Priority nulls.UInt32 `json:"importance" db:"priority"`
 
-	Instructions *Instructions `json:"instructions" db:"-"`
+	Instructions *Instructions `json:"instructions" db:"-" has_many:"instructions"`
 	Pictures     *File         `json:"pictures" db:"-"`
 	Videos       *File         `json:"videos" db:"-"`
 	Audios       *File         `json:"audios" db:"-"`
@@ -97,7 +97,7 @@ func (w *Will) Create(tx *pop.Connection, u *User) (*validate.Errors, error) {
 
 func (w *Will) Get(tx *pop.Connection, id uuid.UUID) error {
 	//TODO:load instructions as well
-	err := tx.Find(w, id)
+	err := tx.Eager().Find(w, id)
 	return err
 }
 
